@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Лось Илья — продуктовый дизайнер</title>
+<meta name="description" content="Проектирую мобильные приложения и веб-продукты: от исследования и сценариев до готового интерфейса.">
+<link rel="stylesheet" href="assets/site/serega-gentle.css">
+<link rel="stylesheet" href="assets/site/amounts-preview.css?v=6">
+<link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=experience-57">
+<link rel="modulepreload" href="loader-number.js?v=white-48">
+<script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.module.js"}}</script>
+<script type="module" src="main.js?v=misa-reset-54"></script>
+<script type="module" src="amounts-preview.js?v=7"></script>
+<noscript><style>#head-poster[hidden]{display:block}</style></noscript>
+</head>
+<body>
+<script>
+history.scrollRestoration='manual';
+const navigation=performance.getEntriesByType('navigation')[0]?.type;
+const returnTarget=new URLSearchParams(location.search).get('returnTo')||(navigation==='back_forward'?history.state?.portfolioReturnTo:null);
+window.portfolioReturnTo=['steam-title','amounts-title'].includes(returnTarget)?returnTarget:null;
+if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);
+scrollTo({top:0,left:0,behavior:'instant'});
+document.documentElement.classList.add(window.portfolioReturnTo?'is-returning':'is-loading');
+window.portfolioLoading=new Promise(resolve=>{
+ let finished=false;
+ window.finishPortfolioLoading=()=>{
+  if(finished)return;
+  finished=true;
+  clearTimeout(timeout);
+  const overlay=document.querySelector('#site-loader');
+  const animated=document.documentElement.classList.contains('is-loading');
+  if(animated)document.documentElement.classList.add('is-finishing');
+  overlay?.classList.add('is-done');
+  if(!window.portfolioReturnTo)scrollTo({top:0,left:0,behavior:'instant'});
+  document.documentElement.classList.remove('is-loading','is-returning');
+  resolve();
+  setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
+ };
+ const timeout=setTimeout(window.finishPortfolioLoading,12000);
+});
+</script>
+<div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
+<script type="module" src="loader.js?v=ready-55"></script>
+<a class="skip-link" href="#works">Перейти к работам</a>
+<header class="site-header container">
+<a class="identity" href="#top"><img src="assets/site/avatar.jpg" alt="" width="48" height="48"><span>Лось Илья</span></a>
+<nav class="contact-links" aria-label="Контакты"><button class="pill" disabled title="Файл CV пока не добавлен">CV <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6.664 7a.75.75 0 0 1 .75-.75h9.9a.75.75 0 0 1 .75.75v9.9a.75.75 0 0 1-1.5 0V8.81L7.53 17.845a.75.75 0 0 1-1.06-1.06l9.033-9.034H7.414a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/>
+</svg></button><a class="pill" href="https://t.me/elkkkkkk" target="_blank" rel="noopener">Telegram <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6.664 7a.75.75 0 0 1 .75-.75h9.9a.75.75 0 0 1 .75.75v9.9a.75.75 0 0 1-1.5 0V8.81L7.53 17.845a.75.75 0 0 1-1.06-1.06l9.033-9.034H7.414a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/>
+</svg></a><button class="pill email">Email <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6 2.25A3.75 3.75 0 0 0 2.25 6v8A3.75 3.75 0 0 0 6 17.75h.25V18A3.75 3.75 0 0 0 10 21.75h8A3.75 3.75 0 0 0 21.75 18v-8A3.75 3.75 0 0 0 18 6.25h-.25V6A3.75 3.75 0 0 0 14 2.25zm11.75 5.5V14A3.75 3.75 0 0 1 14 17.75H7.75V18A2.25 2.25 0 0 0 10 20.25h8A2.25 2.25 0 0 0 20.25 18v-8A2.25 2.25 0 0 0 18 7.75zM3.75 6A2.25 2.25 0 0 1 6 3.75h8A2.25 2.25 0 0 1 16.25 6v8A2.25 2.25 0 0 1 14 16.25H6A2.25 2.25 0 0 1 3.75 14z" clip-rule="evenodd"/>
+</svg></button></nav>
+</header>
+<main id="top">
+<section class="hero" aria-labelledby="intro-title">
+<div class="head-stage"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img hidden id="head-poster" src="assets/site/head-poster.png" alt="" width="860" height="580"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
+<div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon.png?v=original-2" alt="" width="78" height="55"></button><button id="hat-toggle" class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon.png?v=original-2" alt="" width="66" height="60"></button></div></div>
+<div class="intro"><h1 id="intro-title">Привет!👋 Я Илья — продуктовый дизайнер</h1><div class="tags"><span>B2C</span><span>EdTech</span><span>FinTech</span></div><p>3+ года проектирую мобильные приложения и веб-сервисы: от исследования задачи и пользовательских сценариев до интерфейса.</p></div>
+</section>
+<section class="works" id="works" aria-label="Избранные работы">
+<div class="works-container">
+<article class="project" aria-labelledby="steam-title">
+ <div class="project-info">
+  <div class="project-meta"><span>iOS / Android</span><span>Продуктовый кейс</span></div>
+  <div class="project-brand"><span class="brand-avatar brand-avatar--tbank" aria-hidden="true"><img src="assets/site/tbank-brand.svg" alt=""></span><h2 id="steam-title"><a href="https://www.tbank.ru/" target="_blank" rel="noopener">Т-Банк</a></h2></div>
+  <p>Как помочь пользователю найти нужный логин и не перепутать его с никнеймом при пополнении Steam.</p>
+  <div class="project-role"><h3>Мой вклад</h3><p>Бенчмаркинг, гипотезы, иллюстрация и финальный сценарий для iOS и Android.</p></div>
+  <a class="project-link" href="cases/steam-login/">Смотреть кейс <span aria-hidden="true">↗</span></a>
+ </div>
+ <div class="project-media steam-media"><div class="steam-preview-phone"><div class="steam-phone-scene">
+  <img class="steam-phone-frame" src="assets/site/steam-case/phone-front.webp" alt="" width="614" height="1230">
+  <div class="steam-phone-screen"><img class="video-cover" src="assets/site/steam-case/steam-login-after-v3.jpg" alt="" aria-hidden="true" width="750" height="1624"><video data-play-threshold="0.9" muted playsinline loop preload="auto" poster="assets/site/steam-case/steam-login-after-v3.jpg" aria-label="Подсказка с иллюстрацией для ввода логина Steam"><source src="assets/site/steam-case/steam-login-after-v3.mp4" type="video/mp4"></video></div>
+ </div></div></div>
+</article>
+<article class="project" aria-labelledby="amounts-title">
+ <div class="project-info">
+  <div class="project-meta"><span>iOS / Android</span><span>Продуктовый кейс</span></div>
+  <div class="project-brand"><span class="brand-avatar brand-avatar--tbank" aria-hidden="true"><img src="assets/site/tbank-brand.svg" alt=""></span><h2 id="amounts-title"><a href="https://www.tbank.ru/" target="_blank" rel="noopener">Т-Банк</a></h2></div>
+  <p>Как помочь пользователю быстрее пополнить игровой баланс и не рассчитывать сумму с учётом конвертации вручную.</p>
+  <div class="project-role"><h3>Мой вклад</h3><p>Бенчмаркинг, проверка гипотез и финальный сценарий для A/B-теста.</p></div>
+  <a class="project-link" href="cases/payment-suggestions/">Смотреть кейс <span aria-hidden="true">↗</span></a>
+ </div>
+ <div class="project-media amounts-media"><div class="amounts-preview" data-amounts-preview role="img" aria-label="Выбор контентного саджеста: барабан чипов и синхронная замена чипа на экране оплаты">
+  <div class="amounts-scene">
+   <div class="amounts-wheel" aria-hidden="true"></div>
+   <div class="amounts-phone" aria-hidden="true">
+    <img src="cases/payment-suggestions/media-3.png" alt="" width="1797" height="3770" loading="lazy">
+    <div class="amounts-phone-chips"><div class="amounts-chip-row">
+     <span class="amounts-chip amounts-chip--changing"><span class="amounts-chip-content"><span class="amounts-chip-icon" data-kind="gamepad" aria-hidden="true"><img class="amounts-gamepad" src="assets/site/tbank-gamepad.svg" alt="" width="12" height="12"><img class="amounts-history" src="assets/site/tbank-arrow-clock.svg" alt="" width="12" height="12"></span><span class="amounts-chip-label"><span class="amounts-morph">На распродажу 1&nbsp;000&nbsp;₽</span></span></span></span>
+     <span class="amounts-chip">50&nbsp;₽</span><span class="amounts-chip">100&nbsp;₽</span><span class="amounts-chip">200&nbsp;₽</span><span class="amounts-chip">500&nbsp;₽</span>
+    </div></div>
+   </div>
+  </div>
+ </div></div>
+</article>
+<article class="project misa-project" aria-labelledby="misa-title">
+ <div class="project-info">
+  <div class="project-meta"><span>Пет-проект</span><span>Telegram / AI</span></div>
+  <div class="project-brand"><span class="brand-avatar brand-avatar--misa" aria-hidden="true"><img src="assets/site/misa-brand.svg" alt="" width="31" height="28"></span><h2 id="misa-title">Misa</h2></div>
+  <p>Личный AI-помощник для управления деньгами, которого я создал для себя.</p>
+  <p>Записываю расходы в Telegram-бота, а в мини-аппе слежу за бюджетом, конвертами и целями. Миса помогает замечать привычки в тратах и принимать более осознанные решения.</p>
+ </div>
+ <div class="misa-previews">
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-01-web-v3.jpg" aria-label="Миса — Главный экран и конверт"><source src="assets/site/misa/misa-01-web-v3.mp4" type="video/mp4"></video></div>
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-02-web-v3.jpg" aria-label="Миса — График и годовой обзор"><source src="assets/site/misa/misa-02-web-v3.mp4" type="video/mp4"></video></div>
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-03-web-v3.jpg" aria-label="Миса — Календарь и аналитика"><source src="assets/site/misa/misa-03-web-v3.mp4" type="video/mp4"></video></div>
+ </div>
+</article>
+<article class="project" aria-labelledby="enso-title">
+ <div class="project-info">
+  <div class="project-meta"><span>Пет-проект</span><span>Motion-концепт</span></div>
+  <div class="project-brand"><span class="brand-avatar brand-avatar--enso" aria-hidden="true"><img src="assets/site/enso-brand.svg" alt=""></span><h2 id="enso-title"><a href="https://ensoshisha.com/" target="_blank" rel="noopener">ENSŌ</a></h2></div>
+  <p>Концепт интерфейса электронного кальяна.</p>
+  <p>Эксперимент с UI и анимацией в After Effects. Здесь я сосредоточился на визуальном стиле и движении без продуктовой проработки.</p>
+ </div>
+ <div class="enso-previews">
+ <div class="project-media enso-media" data-flight="static"><video muted playsinline loop preload="none" poster="assets/site/enso-motion-v2-poster.jpg" aria-label="Анимация интерфейса ENSŌ"><source src="assets/site/enso-motion-optimized.mp4" type="video/mp4"></video></div>
+ <div class="project-media enso-media" data-flight="static"><video muted playsinline loop preload="none" poster="assets/site/enso-connected-poster.jpg" aria-label="ENSŌ — Connected"><source src="assets/site/enso-connected.mp4" type="video/mp4"></video></div>
+ <div class="project-media enso-media" data-flight="static"><video muted playsinline loop preload="none" poster="assets/site/enso-mod-3-poster.jpg" aria-label="ENSŌ — mod 3"><source src="assets/site/enso-mod-3.mp4" type="video/mp4"></video></div>
+ </div>
+</article>
+<article class="project" aria-labelledby="mora-title">
+ <div class="project-info">
+  <div class="project-meta"><span>Пет-проект</span><span>Web / AI</span></div>
+  <div class="project-brand"><span class="brand-avatar brand-avatar--mora" aria-hidden="true"><img src="assets/site/mora-brand.svg" alt=""></span><h2 id="mora-title"><a href="https://moratarot.com/" target="_blank" rel="noopener">Mora</a></h2></div>
+  <p>Бесплатный AI-таролог, который начинался по фану для коллег, а в итоге стал работающим продуктом.</p>
+  <p>Прошёл весь путь от идеи и дизайна до разработки, запуска на своём домене и подключения аналитики.</p>
+ </div>
+ <div class="mora-previews">
+ <div class="project-media mora-media"><video muted playsinline loop preload="none" poster="assets/site/mora-day-card-poster.jpg" aria-label="Сценарий «Карта дня» в Mora"><source src="assets/site/mora-day-card.mp4" type="video/mp4"></video></div>
+ <div class="project-media mora-media"><video data-play-threshold="0.9" muted playsinline loop preload="none" poster="assets/site/mora-spread-poster.jpg" aria-label="Расклад в Mora"><source src="assets/site/mora-spread.mp4" type="video/mp4"></video></div>
+ </div>
+</article>
+</div></section>
+<section class="experience container" aria-labelledby="experience-title"><h2 id="experience-title">Опыт работы</h2><div class="experience-list">
+<div class="experience-row"><div class="company"><img src="assets/site/solopharm-experience.svg" alt="" width="24" height="24"><span>Solopharm</span></div><div class="role"><strong>Продуктовый дизайнер</strong><span>2026 — Сейчас</span></div><span class="role-details">Что делал?</span></div>
+<div class="experience-row"><div class="company"><img src="assets/site/disarto-experience.svg" alt="" width="24" height="24"><span>Проектная работа</span></div><div class="role"><strong>Дизайнер интерфейсов</strong><span>2025 — 2026</span></div><span class="role-details">Что делал?</span></div>
+<div class="experience-row"><div class="company"><img src="assets/site/tbank-experience.svg" alt="" width="24" height="24"><span>Т-Банк</span></div><div class="role"><strong>Продуктовый дизайнер</strong><span>2025</span></div><div class="role-details role-details--copy"><p>Работал в команде «Платежи и переводы» над категориями «Мобильная связь» и «Игры» — в веб-версии банка и мобильном приложении.</p><p>Прошёл весь дизайн-процесс от понимания задачи до дизайн-ревью. Работал вместе с продактом, аналитиком, разработчиками и центром исследований: изучал данные, искал решения и проверял гипотезы на пользователях.</p></div></div>
+</div></section>
+</main>
+<footer class="site-footer container"><div class="signature"><img src="assets/site/paper-svg-4.svg" alt="Роспись Ильи" width="63" height="46"><span>© 2026</span></div><nav class="contact-links" aria-label="Контакты внизу страницы"><button class="pill" disabled title="Файл CV пока не добавлен">CV <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6.664 7a.75.75 0 0 1 .75-.75h9.9a.75.75 0 0 1 .75.75v9.9a.75.75 0 0 1-1.5 0V8.81L7.53 17.845a.75.75 0 0 1-1.06-1.06l9.033-9.034H7.414a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/>
+</svg></button><a class="pill" href="https://t.me/elkkkkkk" target="_blank" rel="noopener">Telegram <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6.664 7a.75.75 0 0 1 .75-.75h9.9a.75.75 0 0 1 .75.75v9.9a.75.75 0 0 1-1.5 0V8.81L7.53 17.845a.75.75 0 0 1-1.06-1.06l9.033-9.034H7.414a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/>
+</svg></a><button class="pill email">Email <svg class="contact-icon" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path fill="currentColor" fill-rule="evenodd" d="M6 2.25A3.75 3.75 0 0 0 2.25 6v8A3.75 3.75 0 0 0 6 17.75h.25V18A3.75 3.75 0 0 0 10 21.75h8A3.75 3.75 0 0 0 21.75 18v-8A3.75 3.75 0 0 0 18 6.25h-.25V6A3.75 3.75 0 0 0 14 2.25zm11.75 5.5V14A3.75 3.75 0 0 1 14 17.75H7.75V18A2.25 2.25 0 0 0 10 20.25h8A2.25 2.25 0 0 0 20.25 18v-8A2.25 2.25 0 0 0 18 7.75zM3.75 6A2.25 2.25 0 0 1 6 3.75h8A2.25 2.25 0 0 1 16.25 6v8A2.25 2.25 0 0 1 14 16.25H6A2.25 2.25 0 0 1 3.75 14z" clip-rule="evenodd"/>
+</svg></button></nav></footer>
+<div id="toast" role="status" hidden></div>
+</body></html>

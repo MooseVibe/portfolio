@@ -1,0 +1,66 @@
+/* Values exported from the approved Paper case; shared case styles stay intact. */
+.payment-case .case-hero{gap:32px}
+.payment-case .payment-shield{width:138px;height:138px;flex-shrink:0}
+.payment-case .payment-shield img{display:block;width:100%;height:100%}
+.payment-case .payment-context-row{display:flex;gap:44px;align-items:flex-start}
+.payment-case .payment-context-row>.case-column{display:flex;flex:1;min-width:0;flex-direction:column;gap:12px}
+.payment-case .payment-context .payment-phone-image{flex-shrink:0;align-self:auto;width:338px;height:719px}
+.payment-case .payment-context .payment-phone-image img{height:100%;object-fit:cover;object-position:50% 96.875%}
+.payment-case .payment-goals{margin-top:0;gap:32px}
+.payment-case .payment-goals>.case-columns{margin-top:-8px}
+.payment-case .payment-goals>.evidence{margin-top:-28px}
+.payment-case .payment-goals>.evidence:first-of-type{margin-top:0}
+.payment-case .hypotheses-list{gap:60px}
+.payment-case .hypothesis{gap:24px}
+.payment-case .hypothesis:first-child{gap:44px}
+.payment-case .payment-hypothesis-lead{display:flex;flex-direction:column;gap:32px}
+.payment-case .payment-hypothesis-row{display:flex;align-items:flex-start;gap:44px;width:100%}
+.payment-case .payment-hypothesis-row--reverse{flex-direction:row-reverse}
+.payment-case .hypothesis-intro{flex:1;min-width:0;gap:12px;padding:0;border:0;background:none;border-radius:0}
+.payment-case .hypothesis-intro h3{display:block;font-size:28px;line-height:36px;font-weight:500}
+.payment-case .hypothesis-intro p{font-size:18px;line-height:26px;font-style:normal;color:#babbbc}
+.payment-case .payment-hypothesis-row>.payment-phone-image{width:333px;flex-shrink:0;align-self:auto}
+.payment-case .hypothesis--third .payment-phone-image{width:320px}
+.payment-case .payment-survey{display:flex;flex-direction:column;gap:12px}
+.payment-case .payment-survey>h3{margin-bottom:-4px}
+.payment-case .payment-survey-results{grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:center}
+.payment-case .payment-survey-results>div:last-child img{height:264px;object-fit:cover;object-position:5.556% 50%}
+.payment-case .payment-rounding-results{grid-template-columns:minmax(0,1fr) 381px;gap:24px}
+.payment-case .payment-rounding-results ul{gap:12px}
+.payment-case .payment-conclusion{display:flex;flex-direction:column;gap:8px}
+.payment-case .payment-conclusion h4{font-size:20px;line-height:22px;color:#fff;font-style:normal;font-weight:400;margin:0}
+.payment-case .payment-conclusion p{margin:0}
+.payment-case .final-flow{gap:4px}
+.payment-case .final-flow>h2{margin-bottom:20px}
+@media(max-width:850px){
+ .payment-case .payment-context-row,.payment-case .payment-hypothesis-row{gap:32px}
+ .payment-case .payment-context .payment-phone-image{width:42.25%;height:auto;aspect-ratio:338/719}
+ .payment-case .payment-hypothesis-row>.payment-phone-image{width:41.625%}
+ .payment-case .hypothesis--third .payment-phone-image{width:40%}
+ .payment-case .payment-survey-results{grid-template-columns:minmax(0,1fr) minmax(0,1.064fr)}
+ .payment-case .payment-survey-results>div:last-child img{height:auto}
+ .payment-case .payment-rounding-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:650px){
+ .payment-case .case-hero{gap:28px}
+ .payment-case .payment-shield{width:120px;height:120px}
+ .payment-case .payment-context-row,.payment-case .payment-hypothesis-row,.payment-case .payment-hypothesis-row--reverse{flex-direction:column;gap:24px}
+ .payment-case .payment-context .payment-phone-image{width:280px;max-width:100%;align-self:center}
+ .payment-case .payment-hypothesis-row>.payment-phone-image,.payment-case .hypothesis--third .payment-phone-image{width:280px;max-width:100%;align-self:center}
+ .payment-case .payment-goals{margin-top:36px;gap:24px}
+ .payment-case .payment-goals>.evidence{margin-top:-20px}
+ .payment-case .payment-goals>.evidence:first-of-type{margin-top:0}
+ .payment-case .hypothesis-intro h3{font-size:24px;line-height:30px}
+ .payment-case .hypotheses-list{gap:44px}
+ .payment-case .hypothesis:first-child{gap:24px}
+ .payment-case .payment-hypothesis-lead{gap:24px}
+ .payment-case .payment-survey-results,.payment-case .payment-rounding-results{grid-template-columns:1fr;gap:20px}
+ .payment-case .final-flow>h2{margin-bottom:16px}
+}
+
+.payment-case .payment-goals .case-column>h2{font-family:'Inter Tight',system-ui,sans-serif;font-size:24px;line-height:30px;font-weight:500;color:#fff}
+
+.payment-case .final-flow summary,.payment-case .final-flow summary strong{font-family:'Inter Tight',system-ui,sans-serif;font-size:18px;line-height:22px;font-weight:500}
+
+/* Cover the export matte, exposing only the camera through the screen mask. */
+.payment-video-phone .result-phone-screen::after{content:'';position:absolute;left:220px;top:32px;width:178px;height:68px;border-radius:34px;background:#000;pointer-events:none}

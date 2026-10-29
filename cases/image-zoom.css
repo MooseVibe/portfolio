@@ -1,0 +1,14 @@
+html.image-zoom-open{overflow:hidden}
+.can-zoom,.can-zoom img{cursor:zoom-in}
+.image-zoom-trigger{display:block;border:0;padding:0;margin:0;background:transparent;color:inherit;font:inherit;max-width:100%}
+.paper-case .result-row>.image-zoom-trigger{flex-shrink:0;max-width:44%}
+.paper-case .result-row>.image-zoom-trigger .result-gif{max-width:100%}
+.case-lightbox{position:fixed;inset:0;margin:auto;border:0;padding:0;background:transparent;max-width:96vw;max-height:94svh;overflow:visible;cursor:zoom-out;color:#fff}
+.case-lightbox::backdrop{background:rgb(0 0 0 / .85);backdrop-filter:blur(3px);animation:case-backdrop-in .18s ease both}
+.case-lightbox.is-closing::backdrop{animation:case-backdrop-out .14s ease both}
+.case-lightbox img{display:block;width:auto;height:auto;max-width:96vw;max-height:90svh;object-fit:contain;border-radius:8px;cursor:zoom-out}
+.image-zoom-trigger:focus-visible{outline:2px solid #fff;outline-offset:4px}
+@keyframes case-backdrop-in{from{background:rgb(0 0 0 / 0)}to{background:rgb(0 0 0 / .85)}}
+@keyframes case-backdrop-out{from{background:rgb(0 0 0 / .85)}to{background:rgb(0 0 0 / 0)}}
+@media(max-width:650px){.paper-case .result-row>.image-zoom-trigger{max-width:100%;align-self:center}}
+@media(prefers-reduced-motion:reduce){.case-lightbox::backdrop{animation:none}}
