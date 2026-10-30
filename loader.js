@@ -1,4 +1,5 @@
 const overlay=document.querySelector('#site-loader');
+if(overlay){
 window.portfolioLoaderActive=true;
 const number=overlay.querySelector('.loader-number');
 const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -47,4 +48,6 @@ else{
  });
  await counter.settled();
  window.finishPortfolioLoading();
+}
+
 }
