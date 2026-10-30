@@ -10,9 +10,6 @@
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.module.js"}}</script>
 <link rel="modulepreload" href="loader-number.js?v=white-48">
 <link rel="modulepreload" href="head.js?v=network-58">
-<link rel="preload" href="experiments/head/interactive/head-beard-lossless.glb" as="fetch" crossorigin>
-<link rel="preload" href="experiments/head/interactive/glasses-lossless.glb" as="fetch" crossorigin>
-<link rel="preload" href="experiments/head/interactive/hat-web-lossless.glb" as="fetch" crossorigin>
 <script type="module" src="main.js?v=network-58"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
@@ -23,6 +20,14 @@ history.scrollRestoration='manual';
 const navigation=performance.getEntriesByType('navigation')[0]?.type;
 const returnTarget=new URLSearchParams(location.search).get('returnTo')||(navigation==='back_forward'?history.state?.portfolioReturnTo:null);
 window.portfolioReturnTo=['steam-title','amounts-title'].includes(returnTarget)?returnTarget:null;
+if(!window.portfolioReturnTo)for(const href of [
+ 'experiments/head/interactive/head-beard-lossless.glb',
+ 'experiments/head/interactive/glasses-lossless.glb',
+ 'experiments/head/interactive/hat-web-lossless.glb'
+]){
+ const link=document.createElement('link');
+ link.rel='preload';link.as='fetch';link.href=href;link.crossOrigin='anonymous';document.head.append(link);
+}
 if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);
 scrollTo({top:0,left:0,behavior:'instant'});
 document.documentElement.classList.add(window.portfolioReturnTo?'is-returning':'is-loading');
