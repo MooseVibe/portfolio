@@ -72,7 +72,7 @@ for(const image of document.querySelectorAll('img[data-motion-src]')){
 if(caseVideos.length){
  const visible=new Set();
  const sync=video=>{
-  if(visible.has(video)&&!document.hidden)video.play().catch(()=>{});
+  if(visible.has(video)&&!document.hidden&&(video.readyState>=4||video.currentTime>0))video.play().catch(()=>{});
   else video.pause();
  };
  const observer=new IntersectionObserver(entries=>{
@@ -81,6 +81,6 @@ if(caseVideos.length){
    sync(target);
   }
  },{threshold:[0,.2]});
- for(const video of caseVideos){video.muted=true;video.addEventListener('canplay',()=>sync(video));observer.observe(video);}
+ for(const video of caseVideos){video.muted=true;video.addEventListener('canplaythrough',()=>sync(video));observer.observe(video);}
  document.addEventListener('visibilitychange',()=>caseVideos.forEach(sync));
 }

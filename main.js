@@ -117,10 +117,11 @@ const videoObserver=new IntersectionObserver(entries=>{
 },{threshold:[0,.35,.85,.9]});
 function syncProjectVideos(){
  for(const video of projectVideos){
-  if(visibleVideos.has(video)&&!document.hidden&&!document.documentElement.classList.contains('is-loading')&&!document.documentElement.classList.contains('is-returning'))video.play().catch(()=>{});else video.pause();
+  const buffered=video.readyState>=4||video.currentTime>0;
+  if(buffered&&visibleVideos.has(video)&&!document.hidden&&!document.documentElement.classList.contains('is-loading')&&!document.documentElement.classList.contains('is-returning'))video.play().catch(()=>{});else video.pause();
  }
 }
-for(const video of projectVideos)videoObserver.observe(video);
+for(const video of projectVideos){video.addEventListener('canplaythrough',syncProjectVideos);videoObserver.observe(video);}
 // Start buffering nearby sections after the portrait has finished downloading.
 const videoPreloader=new IntersectionObserver(entries=>{
  for(const {target,isIntersecting} of entries){

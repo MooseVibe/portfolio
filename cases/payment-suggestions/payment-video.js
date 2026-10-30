@@ -8,7 +8,7 @@ for(const phone of document.querySelectorAll('.payment-video-phone')){
  });
  fit.observe(phone);
  function sync(){
-  if(started&&inView&&!document.hidden)video.play().catch(()=>{});
+  if(started&&inView&&!document.hidden&&(video.readyState>=4||video.currentTime>0))video.play().catch(()=>{});
   else video.pause();
  }
  const observer=new IntersectionObserver(entries=>{
@@ -20,7 +20,7 @@ for(const phone of document.querySelectorAll('.payment-video-phone')){
   }
  },{threshold:[0,.8]});
  observer.observe(frame);
- video.addEventListener('canplay',sync);
+ video.addEventListener('canplaythrough',sync);
  document.addEventListener('visibilitychange',sync);
  addEventListener('pagehide',()=>video.pause());
  addEventListener('pageshow',sync);
