@@ -22,7 +22,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=delivery-67').catch(error=>{
+const loadHead=()=>import('./head.js?v=delivery-68').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
@@ -31,7 +31,14 @@ const loadHead=()=>import('./head.js?v=delivery-67').catch(error=>{
  document.querySelector('#hat-toggle').disabled=true;
  revealIntro();console.warn('Не удалось запустить 3D',error);
 });
-if(!window.portfolioReturnTo)window.portfolioLoading.then(loadHead);
+if(!window.portfolioReturnTo){
+ const slow=navigator.connection&&(navigator.connection.saveData||navigator.connection.downlink<2);
+ window.portfolioLoading.then(()=>{
+  if(!slow)return loadHead();
+  // On slow links, do not spend bandwidth on 3D after the visitor scrolls to work.
+  setTimeout(()=>{const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();loadHead();}});observer.observe(document.querySelector('#head-view'));},3000);
+ });
+}
 else{
  document.querySelector('#head-poster').hidden=false;
  stage.classList.add('is-fallback','is-ready');
@@ -121,7 +128,7 @@ function syncProjectVideos(){
  for(const video of projectVideos){
   const end=video.buffered.length?video.buffered.end(video.buffered.length-1):0;
   const slow=navigator.connection&&(navigator.connection.saveData||navigator.connection.downlink<2);
-  const buffered=video.currentTime>0||(video.readyState>=3&&(slow?end>=video.duration-.1:end>=Math.min(3,video.duration)));
+  const buffered=video.currentTime>0||(video.readyState>=3&&(slow?end>=video.duration-.1:(video.readyState>=4||end>=Math.min(3,video.duration))));
   if(buffered&&visibleVideos.has(video)&&!document.hidden&&!document.documentElement.classList.contains('is-loading')&&!document.documentElement.classList.contains('is-returning'))video.play().catch(()=>{});else video.pause();
  }
 }
@@ -146,7 +153,7 @@ window.portfolioLoading?.then(()=>{
 });
 window.portfolioLoading?.then(syncProjectVideos);
 document.addEventListener('visibilitychange',syncProjectVideos);
-window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=delivery-67');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
+window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=delivery-68');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
 addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
 addEventListener('pageshow',event=>{if(event.persisted)syncProjectVideos();});
 const steamPhone=document.querySelector('.steam-preview-phone');
