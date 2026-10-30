@@ -22,7 +22,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=entry-63').catch(error=>{
+const loadHead=()=>import('./head.js?v=delivery-64').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
@@ -124,11 +124,13 @@ function syncProjectVideos(){
  }
 }
 for(const video of projectVideos){video.addEventListener('canplaythrough',syncProjectVideos);videoObserver.observe(video);}
-// Start buffering nearby sections after the portrait has finished downloading.
+// Buffer upcoming media after the lightweight entrance is ready.
 const videoPreloader=new IntersectionObserver(entries=>{
  for(const {target,isIntersecting} of entries){
   if(!isIntersecting)continue;
   target.addEventListener('canplay',syncProjectVideos,{once:true});
+  const connection=navigator.connection;
+  if(connection&&(connection.saveData||connection.downlink<2)){const mobile=target.querySelector('source[media]');if(mobile)mobile.media='all';}
   target.preload='auto';if(target.readyState===0)target.load();videoPreloader.unobserve(target);
   syncProjectVideos();
  }
@@ -138,7 +140,7 @@ window.portfolioLoading?.then(()=>{
 });
 window.portfolioLoading?.then(syncProjectVideos);
 document.addEventListener('visibilitychange',syncProjectVideos);
-window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=network-58');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
+window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=delivery-64');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
 addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
 addEventListener('pageshow',event=>{if(event.persisted)syncProjectVideos();});
 const steamPhone=document.querySelector('.steam-preview-phone');

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {MeshoptDecoder} from './experiments/head/interactive/vendor/meshopt_decoder.mjs';
 import {GLTFLoader} from './experiments/head/interactive/vendor/GLTFLoader.js';
 
 function createEnsoMockup(host){
@@ -77,7 +78,7 @@ async function load(){
   scene.add(new THREE.HemisphereLight(0xffffff,0x666666,2));
   for(const [x,y,z,p] of [[-.15,.22,.2,3],[.15,.1,.1,2]]){const l=new THREE.DirectionalLight(0xffffff,p);l.position.set(x,y,z);scene.add(l);}
   pivot=new THREE.Group();scene.add(pivot);
-  const [asset]=await Promise.all([new GLTFLoader().loadAsync('./experiments/enso-mockup/phone.glb'),videoReady]);
+  const [asset]=await Promise.all([new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync('./experiments/enso-mockup/phone-web-v4.glb'),videoReady]);
   const texture=new THREE.VideoTexture(video);texture.colorSpace=THREE.SRGBColorSpace;texture.flipY=false;
   asset.scene.position.y=-.0816;
   asset.scene.traverse(o=>{if(o.isMesh&&o.name==='ENSO_Screen')o.material=new THREE.MeshBasicMaterial({map:texture});});
