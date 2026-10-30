@@ -22,7 +22,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=network-59').catch(error=>{
+const loadHead=()=>import('./head.js?v=network-60').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
