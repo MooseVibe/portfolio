@@ -20,6 +20,7 @@ for(const phone of document.querySelectorAll('.payment-video-phone')){
   }
  },{threshold:[0,.8]});
  observer.observe(frame);
+ video.addEventListener('canplay',sync);
  document.addEventListener('visibilitychange',sync);
  addEventListener('pagehide',()=>video.pause());
  addEventListener('pageshow',sync);

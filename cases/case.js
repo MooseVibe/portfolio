@@ -40,6 +40,14 @@ for(const details of document.querySelectorAll('details')){
  details.classList.toggle('is-expanded',expanded);
 }
 
+const mediaPreloader=new IntersectionObserver(entries=>{
+ for(const {target,isIntersecting} of entries){
+  if(!isIntersecting)continue;
+  target.preload='auto';mediaPreloader.unobserve(target);
+ }
+},{rootMargin:'1200px 0px'});
+for(const video of document.querySelectorAll('video'))mediaPreloader.observe(video);
+
 const caseVideos=[...document.querySelectorAll('[data-case-video]')];
 const chartPosters=new WeakMap(),playedCharts=new WeakSet();
 const chartMotion=new IntersectionObserver(entries=>{
@@ -73,6 +81,6 @@ if(caseVideos.length){
    sync(target);
   }
  },{threshold:[0,.2]});
- for(const video of caseVideos){video.muted=true;observer.observe(video);}
+ for(const video of caseVideos){video.muted=true;video.addEventListener('canplay',()=>sync(video));observer.observe(video);}
  document.addEventListener('visibilitychange',()=>caseVideos.forEach(sync));
 }
