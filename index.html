@@ -9,8 +9,8 @@
 <link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=network-58">
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.module.js"}}</script>
 <link rel="modulepreload" href="loader-number.js?v=white-48">
-<link rel="modulepreload" href="head.js?v=network-58">
-<script type="module" src="main.js?v=network-58"></script>
+<link rel="modulepreload" href="head.js?v=network-59">
+<script type="module" src="main.js?v=network-59"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
 </head>
@@ -21,12 +21,12 @@ const navigation=performance.getEntriesByType('navigation')[0]?.type;
 const returnTarget=new URLSearchParams(location.search).get('returnTo')||(navigation==='back_forward'?history.state?.portfolioReturnTo:null);
 window.portfolioReturnTo=['steam-title','amounts-title'].includes(returnTarget)?returnTarget:null;
 if(!window.portfolioReturnTo)for(const href of [
- 'experiments/head/interactive/head-beard-lossless.glb',
- 'experiments/head/interactive/glasses-lossless.glb',
- 'experiments/head/interactive/hat-web-lossless.glb'
+ 'experiments/head/interactive/head-beard-web-v1.glb',
+ 'experiments/head/interactive/glasses-web-v1.glb',
+ 'experiments/head/interactive/hat-web-v1.glb'
 ]){
  const link=document.createElement('link');
- link.rel='preload';link.as='fetch';link.href=href;link.crossOrigin='anonymous';document.head.append(link);
+ link.rel='preload';link.as='fetch';link.href=href;link.crossOrigin='anonymous';link.fetchPriority='low';document.head.append(link);
 }
 if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);
 scrollTo({top:0,left:0,behavior:'instant'});
@@ -46,11 +46,11 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(window.finishPortfolioLoading,100000);
+ const timeout=setTimeout(()=>{if(!window.portfolioLoaderActive)window.finishPortfolioLoading();},100000);
 });
 </script>
 <div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
-<script type="module" src="loader.js?v=network-58"></script>
+<script type="module" src="loader.js?v=network-59"></script>
 <a class="skip-link" href="#works">Перейти к работам</a>
 <header class="site-header container">
 <a class="identity" href="#top"><img src="assets/site/avatar.jpg" alt="" width="48" height="48"><span>Лось Илья</span></a>

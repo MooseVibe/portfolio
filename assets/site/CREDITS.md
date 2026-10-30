@@ -20,5 +20,5 @@ Loader digits use [Number Flow](https://github.com/barvian/number-flow) 0.6.2 by
 
 ## Meshoptimizer
 
-The portrait models use lossless geometry compression with [meshoptimizer](https://github.com/zeux/meshoptimizer) 1.3.0 by Arseny Kapoulkine, MIT. The browser decoder and its license are in `experiments/head/interactive/vendor/meshopt_decoder.mjs` and `MESHOPT-LICENSE.md`. Vertex values, morph targets and decoded texture pixels are preserved.
+The portrait models use lossless geometry compression with [meshoptimizer](https://github.com/zeux/meshoptimizer) 1.3.0 by Arseny Kapoulkine, MIT. The browser decoder and its license are in `experiments/head/interactive/vendor/meshopt_decoder.mjs` and `MESHOPT-LICENSE.md`. Vertex values and morph targets are preserved. Web models use WebP textures, with base-color resolution preserved and normal/roughness maps limited to 1024px. The lossless versions are retained in the working sources.
 

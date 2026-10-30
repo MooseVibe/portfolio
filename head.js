@@ -25,8 +25,8 @@ function modelProgress(name){return event=>{
  downloads.set(name,event.total?event.loaded/event.total:0);
  host.dataset.progress=String([...downloads.values()].reduce((a,b)=>a+b,0)/3);
 };}
-const glassesAsset=loader.loadAsync('./experiments/head/interactive/glasses-lossless.glb',modelProgress('glasses')).catch(error=>{glassesButton.disabled=true;console.warn('Очки не загрузились',error);return null;});
-const hatAsset=loader.loadAsync('./experiments/head/interactive/hat-web-lossless.glb',modelProgress('hat')).catch(error=>{hatButton.disabled=true;console.warn('Шляпа не загрузилась',error);return null;});
+const glassesAsset=loader.loadAsync('./experiments/head/interactive/glasses-web-v1.glb',modelProgress('glasses')).catch(error=>{glassesButton.disabled=true;console.warn('Очки не загрузились',error);return null;});
+const hatAsset=loader.loadAsync('./experiments/head/interactive/hat-web-v1.glb',modelProgress('hat')).catch(error=>{hatButton.disabled=true;console.warn('Шляпа не загрузилась',error);return null;});
 const pointer=new THREE.Vector2(),repulsion=new THREE.Vector2(),gazePoint=new THREE.Vector3();
 let pointerActive=false,elapsed=0,ready=false;
 let head,hat,glasses,distance=6.3;const center=new THREE.Vector3();
@@ -68,7 +68,7 @@ function gelatine(button){
  accessoryPulses.set(button,button.animate([{opacity:0,scale:'1 1'},{opacity:1,scale:'.9 1.1',offset:.25},{opacity:1,scale:'1.1 .9',offset:.5},{opacity:1,scale:'.95 1.05',offset:.75},{opacity:1,scale:'1 1'}],{duration:500,easing:'ease'}));
 }
 for(const [button,name] of [[glassesButton,'очки Ray-Ban'],[hatButton,'ковбойскую шляпу']])button.addEventListener('click',()=>{const on=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(on));button.setAttribute('aria-label',`${on?'Снять':'Надеть'} ${name}`);accessories(true);gelatine(button);playUISound('toggle');});
-loader.loadAsync('./experiments/head/interactive/head-beard-lossless.glb',modelProgress('head')).then(async gltf=>{
+loader.loadAsync('./experiments/head/interactive/head-beard-web-v1.glb',modelProgress('head')).then(async gltf=>{
  head=gltf.scene;scene.add(head);
  head.traverse(o=>{if(!o.isMesh)return;if(o.morphTargetDictionary?.CheekDefinition!==undefined){faces.push(o);o.morphTargetInfluences[o.morphTargetDictionary.CheekDefinition]=1.25;}
  const m=o.material;if(!m.map)return;

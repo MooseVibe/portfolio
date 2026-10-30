@@ -1,4 +1,5 @@
 const overlay=document.querySelector('#site-loader');
+window.portfolioLoaderActive=true;
 const number=overlay.querySelector('.loader-number');
 const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const waitImage=img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});});
@@ -19,9 +20,16 @@ if(window.portfolioReturnTo){
  const headReady=new Promise(resolve=>{
   const host=document.querySelector('#head-view');
   if(host.dataset.loaded||host.dataset.arrival)return resolve();
-  const observer=new MutationObserver(()=>{if(host.dataset.loaded||host.dataset.arrival){observer.disconnect();resolve();}});
+  let timeout;
+  const check=()=>{
+   clearTimeout(timeout);
+   if(host.dataset.loaded||host.dataset.arrival){observer.disconnect();resolve();return;}
+   // A slow download is still a healthy download while progress keeps arriving.
+   timeout=setTimeout(()=>{observer.disconnect();resolve();},90000);
+  };
+  const observer=new MutationObserver(check);
   observer.observe(host,{attributes:true});
-  setTimeout(()=>{observer.disconnect();resolve();},90000);
+  check();
  });
  const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img,.steam-media .video-cover,.steam-phone-frame')];
  const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
@@ -33,7 +41,7 @@ preparation.then(()=>{ready=true;});
 if(window.portfolioReturnTo)await Promise.race([preparation,new Promise(resolve=>setTimeout(resolve,160))]);
 if(window.portfolioReturnTo&&ready)window.finishPortfolioLoading();
 else{
- const {createLoaderNumber}=await import('./loader-number.js?v=white-48');
+ const {createLoaderNumber}=await import('./loader-number.js?v=white-48').catch(()=>({createLoaderNumber:element=>({setProgress:value=>{element.textContent=String(Math.round(value));},settled:()=>Promise.resolve()})}));
  const counter=createLoaderNumber(number,reduced);
  // Reveal a return loader only after its animated digits exist.
  if(window.portfolioReturnTo){
