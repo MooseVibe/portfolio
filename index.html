@@ -6,11 +6,12 @@
 <meta name="description" content="Проектирую мобильные приложения и веб-продукты: от исследования и сценариев до готового интерфейса.">
 <link rel="stylesheet" href="assets/site/serega-gentle.css">
 <link rel="stylesheet" href="assets/site/amounts-preview.css?v=6">
-<link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=network-58">
+<link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=entry-63">
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.module.js"}}</script>
+<link rel="preload" href="assets/site/head-entry.webp" as="image" fetchpriority="high">
 <link rel="modulepreload" href="loader-number.js?v=white-48">
-<link rel="modulepreload" href="head.js?v=network-62">
-<script type="module" src="main.js?v=network-62"></script>
+
+<script type="module" src="main.js?v=entry-63"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
 </head>
@@ -20,14 +21,6 @@ history.scrollRestoration='manual';
 const navigation=performance.getEntriesByType('navigation')[0]?.type;
 const returnTarget=new URLSearchParams(location.search).get('returnTo')||(navigation==='back_forward'?history.state?.portfolioReturnTo:null);
 window.portfolioReturnTo=['steam-title','amounts-title'].includes(returnTarget)?returnTarget:null;
-if(!window.portfolioReturnTo)for(const href of [
- 'experiments/head/interactive/head-beard-web-v1.glb',
- 'experiments/head/interactive/glasses-web-v1.glb',
- 'experiments/head/interactive/hat-web-v1.glb'
-]){
- const link=document.createElement('link');
- link.rel='preload';link.as='fetch';link.href=href;link.crossOrigin='anonymous';link.fetchPriority='low';document.head.append(link);
-}
 if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);
 scrollTo({top:0,left:0,behavior:'instant'});
 document.documentElement.classList.add(window.portfolioReturnTo?'is-returning':'is-loading');
@@ -46,11 +39,11 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(()=>{if(!window.portfolioLoaderActive)window.finishPortfolioLoading();},100000);
+ const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:1500);
 });
 </script>
 <div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
-<script type="module" src="loader.js?v=network-59"></script>
+<script type="module" src="loader.js?v=entry-63"></script>
 <a class="skip-link" href="#works">Перейти к работам</a>
 <header class="site-header container">
 <a class="identity" href="#top"><img src="assets/site/avatar.jpg" alt="" width="48" height="48"><span>Лось Илья</span></a>
@@ -64,8 +57,8 @@ window.portfolioLoading=new Promise(resolve=>{
 </header>
 <main id="top">
 <section class="hero" aria-labelledby="intro-title">
-<div class="head-stage"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img hidden id="head-poster" src="assets/site/head-poster.png" alt="" width="860" height="580"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
-<div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon-web.webp" alt="" width="78" height="55"></button><button id="hat-toggle" class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon-web.webp" alt="" width="66" height="60"></button></div></div>
+<div class="head-stage is-fallback is-ready"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img id="head-poster" fetchpriority="high" src="assets/site/head-entry.webp" alt="" width="1320" height="728"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
+<div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" disabled class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon-web.webp" alt="" width="78" height="55"></button><button id="hat-toggle" disabled class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon-web.webp" alt="" width="66" height="60"></button></div></div>
 <div class="intro"><h1 id="intro-title">Привет!👋 Я Илья — продуктовый дизайнер</h1><div class="tags"><span>B2C</span><span>EdTech</span><span>FinTech</span></div><p>3+ года проектирую мобильные приложения и веб-сервисы: от исследования задачи и пользовательских сценариев до интерфейса.</p></div>
 </section>
 <section class="works" id="works" aria-label="Избранные работы">

@@ -22,7 +22,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=network-62').catch(error=>{
+const loadHead=()=>import('./head.js?v=entry-63').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
@@ -31,7 +31,7 @@ const loadHead=()=>import('./head.js?v=network-62').catch(error=>{
  document.querySelector('#hat-toggle').disabled=true;
  revealIntro();console.warn('Не удалось запустить 3D',error);
 });
-if(!window.portfolioReturnTo)loadHead();
+if(!window.portfolioReturnTo)window.portfolioLoading.then(loadHead);
 else{
  document.querySelector('#head-poster').hidden=false;
  stage.classList.add('is-fallback','is-ready');

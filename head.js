@@ -78,14 +78,18 @@ m.onBeforeCompile=shader=>{
 shader.uniforms.clarity=clarity;
 shader.uniforms.beardTone=beardTone;
 shader.uniforms.reluctance=reluctance;
+shader.uniforms.skinPositionScale={value:new THREE.Vector3(...(m.userData.skinPositionScale||[1,1,1]))};
+shader.uniforms.skinPositionOffset={value:new THREE.Vector3(...(m.userData.skinPositionOffset||[0,0,0]))};
 shader.uniforms.texel={value:new THREE.Vector2(1/m.map.image.width,1/m.map.image.height)};
-shader.vertexShader='uniform float reluctance;\nvarying vec3 skinPosition;\n'+shader.vertexShader;
+shader.vertexShader='uniform float reluctance;\nuniform vec3 skinPositionScale;\nuniform vec3 skinPositionOffset;\nvarying vec3 skinPosition;\n'+shader.vertexShader;
 // The textured brows only need a tiny local movement; a full facial rig would be needed for larger expressions.
 shader.vertexShader=shader.vertexShader.replace('#include <morphtarget_vertex>',`#include <morphtarget_vertex>
-float brow=exp(-pow((abs(transformed.x)-0.28)/0.19,2.0)-pow((transformed.y-0.34)/0.085,2.0))*smoothstep(0.40,0.65,transformed.z);
-transformed.y-=0.028*brow*reluctance;
-transformed.x-=sign(transformed.x)*0.006*brow*reluctance;
-skinPosition=transformed;`);
+vec3 originalPosition=transformed*skinPositionScale+skinPositionOffset;
+float brow=exp(-pow((abs(originalPosition.x)-0.28)/0.19,2.0)-pow((originalPosition.y-0.34)/0.085,2.0))*smoothstep(0.40,0.65,originalPosition.z);
+originalPosition.y-=0.028*brow*reluctance;
+originalPosition.x-=sign(originalPosition.x)*0.006*brow*reluctance;
+transformed=(originalPosition-skinPositionOffset)/skinPositionScale;
+skinPosition=originalPosition;`);
 shader.fragmentShader='uniform float clarity;\nuniform float beardTone;\nuniform vec2 texel;\nvarying vec3 skinPosition;\n'+shader.fragmentShader;
 const map=THREE.ShaderChunk.map_fragment.replace('diffuseColor *= sampledDiffuseColor;',`
 vec3 neighbours=(texture2D(map,vMapUv+vec2(texel.x*2.0,0.0)).rgb+texture2D(map,vMapUv-vec2(texel.x*2.0,0.0)).rgb+texture2D(map,vMapUv+vec2(0.0,texel.y*2.0)).rgb+texture2D(map,vMapUv-vec2(0.0,texel.y*2.0)).rgb)*0.25;
@@ -103,7 +107,9 @@ await Promise.allSettled([
  glassesAsset.then(asset=>{if(!asset)return;glasses=asset.scene;glasses.traverse(o=>{if(o.isMesh){o.material.envMapIntensity=.65;if(o.material.name==='lambert1')o.material.roughness=.38;}});glasses=prepareAccessory(glasses,new THREE.Vector3(0,.015,.2));}),
  hatAsset.then(asset=>{if(!asset)return;hat=asset.scene;hat=prepareAccessory(hat,new THREE.Vector3(0,.24,0));})
 ]);
-accessories();head.position.z=reduced?0:-14;
+const upgrading=!document.documentElement.classList.contains('is-loading');
+if(upgrading){elapsed=1;stage.classList.add('is-upgrading');}
+accessories();head.position.z=reduced||upgrading?0:-14;
 // Upload one texture per frame instead of blocking the first draw with every image.
 const textures=new Set();
 scene.traverse(object=>{
@@ -116,6 +122,7 @@ for(const texture of textures){
  await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
 }
 if(renderer.compileAsync)await renderer.compileAsync(scene,camera);
+if(upgrading)await Promise.allSettled(poster.getAnimations().map(animation=>animation.finished));
 renderer.render(scene,camera);poster.hidden=true;
 status.textContent='3D-портрет загружен';glassesButton.disabled=!glasses;hatButton.disabled=!hat;host.dataset.loaded='true';
 if(window.portfolioLoading)await window.portfolioLoading;

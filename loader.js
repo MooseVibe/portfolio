@@ -17,23 +17,9 @@ if(window.portfolioReturnTo){
  for(const img of images)img.loading='eager';
  preparation=bounded(Promise.allSettled([document.fonts.ready,...images.map(waitImage),window.portfolioReturnTo==='steam-title'?previewReady():Promise.resolve()]),3500);
 }else{
- const headReady=new Promise(resolve=>{
-  const host=document.querySelector('#head-view');
-  if(host.dataset.loaded||host.dataset.arrival)return resolve();
-  let timeout;
-  const check=()=>{
-   clearTimeout(timeout);
-   if(host.dataset.loaded||host.dataset.arrival){observer.disconnect();resolve();return;}
-   // A slow download is still a healthy download while progress keeps arriving.
-   timeout=setTimeout(()=>{observer.disconnect();resolve();},90000);
-  };
-  const observer=new MutationObserver(check);
-  observer.observe(host,{attributes:true});
-  check();
- });
- const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img,.steam-media .video-cover,.steam-phone-frame')];
+ const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img')];
  const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
- preparation=Promise.allSettled([document.fonts.ready,imageReady,headReady]);
+ preparation=bounded(Promise.allSettled([document.fonts.ready,imageReady]),900);
 }
 let ready=false;
 preparation.then(()=>{ready=true;});
@@ -53,8 +39,7 @@ else{
   const tick=now=>{
    if(!overlay.isConnected)return resolve();
    // Finish as soon as the destination is prepared; never simulate extra loading.
-   const progress=Number(document.querySelector('#head-view').dataset.progress||0);
-   value=ready?100:Math.max(value,Math.min(95,progress*85+(fontsReady?5:0)+(imagesReady?5:0)));
+   value=ready?100:Math.max(value,(fontsReady?45:0)+(imagesReady?50:0));
    counter.setProgress(value,now);
    if(value===100)resolve();else requestAnimationFrame(tick);
   };
