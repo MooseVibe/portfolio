@@ -117,7 +117,7 @@ for(const texture of textures){
 }
 if(renderer.compileAsync)await renderer.compileAsync(scene,camera);
 renderer.render(scene,camera);poster.hidden=true;
-status.textContent='3D-портрет загружен';host.dataset.loaded='true';
+status.textContent='3D-портрет загружен';glassesButton.disabled=!glasses;hatButton.disabled=!hat;host.dataset.loaded='true';
 if(window.portfolioLoading)await window.portfolioLoading;
 ready=true;stage.classList.remove('is-fallback');stage.classList.add('is-ready');
 }).catch(error=>{showFallback();console.warn('Не удалось загрузить 3D-портрет',error);});
