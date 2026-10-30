@@ -1,11 +1,12 @@
 import {playUISound} from './assets/site/ui-sounds.js';
 import * as THREE from 'three';
 import {GLTFLoader} from './experiments/head/interactive/vendor/GLTFLoader.js';
+import {MeshoptDecoder} from './experiments/head/interactive/vendor/meshopt_decoder.mjs';
 const host=document.querySelector('#head-view'), poster=document.querySelector('#head-poster'),status=document.querySelector('#head-status');
 const glassesButton=document.querySelector('#glasses-toggle'),hatButton=document.querySelector('#hat-toggle');
 const stage=host.closest('.head-stage');
 function announceArrival(){if(host.dataset.arrival)return;host.dataset.arrival='near';document.dispatchEvent(new Event('head-near'));}
-function showFallback(){announceArrival();poster.hidden=false;stage.classList.add('is-fallback','is-ready');status.textContent='Статичный портрет';glassesButton.disabled=hatButton.disabled=true;}
+function showFallback(){host.dataset.loaded='fallback';announceArrival();poster.hidden=false;stage.classList.add('is-fallback','is-ready');status.textContent='Статичный портрет';glassesButton.disabled=hatButton.disabled=true;}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(error){showFallback();console.warn(error);}
@@ -18,6 +19,14 @@ for(const x of [-3,3]){const panel=new THREE.Mesh(new THREE.PlaneGeometry(2.5,4)
 const pmrem=new THREE.PMREMGenerator(renderer),studioMap=pmrem.fromScene(studio);scene.environment=studioMap.texture;pmrem.dispose();
 for(const [x,y,z,power] of [[-3,4,5,95],[3,1,4,35],[2,3,-3,45]]){const light=new THREE.DirectionalLight(0xffffff,power/40);light.position.set(x,y,z);scene.add(light);}
 const loader=new GLTFLoader(),faces=[],target=new THREE.Vector2(),clarity={value:1},beardTone={value:1},reluctance={value:0};
+loader.setMeshoptDecoder(MeshoptDecoder);
+const downloads=new Map();
+function modelProgress(name){return event=>{
+ downloads.set(name,event.total?event.loaded/event.total:0);
+ host.dataset.progress=String([...downloads.values()].reduce((a,b)=>a+b,0)/3);
+};}
+const glassesAsset=loader.loadAsync('./experiments/head/interactive/glasses-lossless.glb',modelProgress('glasses')).catch(error=>{glassesButton.disabled=true;console.warn('Очки не загрузились',error);return null;});
+const hatAsset=loader.loadAsync('./experiments/head/interactive/hat-web-lossless.glb',modelProgress('hat')).catch(error=>{hatButton.disabled=true;console.warn('Шляпа не загрузилась',error);return null;});
 const pointer=new THREE.Vector2(),repulsion=new THREE.Vector2(),gazePoint=new THREE.Vector3();
 let pointerActive=false,elapsed=0,ready=false;
 let head,hat,glasses,distance=6.3;const center=new THREE.Vector3();
@@ -59,7 +68,7 @@ function gelatine(button){
  accessoryPulses.set(button,button.animate([{opacity:0,scale:'1 1'},{opacity:1,scale:'.9 1.1',offset:.25},{opacity:1,scale:'1.1 .9',offset:.5},{opacity:1,scale:'.95 1.05',offset:.75},{opacity:1,scale:'1 1'}],{duration:500,easing:'ease'}));
 }
 for(const [button,name] of [[glassesButton,'очки Ray-Ban'],[hatButton,'ковбойскую шляпу']])button.addEventListener('click',()=>{const on=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(on));button.setAttribute('aria-label',`${on?'Снять':'Надеть'} ${name}`);accessories(true);gelatine(button);playUISound('toggle');});
-loader.load('./experiments/head/interactive/head-beard.glb',async gltf=>{
+loader.loadAsync('./experiments/head/interactive/head-beard-lossless.glb',modelProgress('head')).then(async gltf=>{
  head=gltf.scene;scene.add(head);
  head.traverse(o=>{if(!o.isMesh)return;if(o.morphTargetDictionary?.CheekDefinition!==undefined){faces.push(o);o.morphTargetInfluences[o.morphTargetDictionary.CheekDefinition]=1.25;}
  const m=o.material;if(!m.map)return;
@@ -90,8 +99,8 @@ shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',ma
 });
 const box=new THREE.Box3().setFromObject(head);box.getCenter(center);distance=box.getSize(new THREE.Vector3()).y/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2)))*1.05;camera.position.set(center.x,center.y+.25,distance*1.35);camera.lookAt(center.x,center.y+.25,0);accessories();
 await Promise.allSettled([
- loader.loadAsync('./experiments/head/interactive/glasses.glb').then(asset=>{glasses=asset.scene;glasses.traverse(o=>{if(o.isMesh){o.material.envMapIntensity=.65;if(o.material.name==='lambert1')o.material.roughness=.38;}});glasses=prepareAccessory(glasses,new THREE.Vector3(0,.015,.2));}).catch(()=>{glassesButton.disabled=true;}),
- loader.loadAsync('./experiments/head/interactive/hat-web.glb').then(asset=>{hat=asset.scene;hat=prepareAccessory(hat,new THREE.Vector3(0,.24,0));}).catch(()=>{hatButton.disabled=true;})
+ glassesAsset.then(asset=>{if(!asset)return;glasses=asset.scene;glasses.traverse(o=>{if(o.isMesh){o.material.envMapIntensity=.65;if(o.material.name==='lambert1')o.material.roughness=.38;}});glasses=prepareAccessory(glasses,new THREE.Vector3(0,.015,.2));}),
+ hatAsset.then(asset=>{if(!asset)return;hat=asset.scene;hat=prepareAccessory(hat,new THREE.Vector3(0,.24,0));})
 ]);
 accessories();head.position.z=reduced?0:-14;
 // Upload one texture per frame instead of blocking the first draw with every image.
@@ -110,7 +119,7 @@ renderer.render(scene,camera);poster.hidden=true;
 status.textContent='3D-портрет загружен';host.dataset.loaded='true';
 if(window.portfolioLoading)await window.portfolioLoading;
 ready=true;stage.classList.remove('is-fallback');stage.classList.add('is-ready');
-},undefined,error=>{showFallback();console.warn('Не удалось загрузить 3D-портрет',error);});
+}).catch(error=>{showFallback();console.warn('Не удалось загрузить 3D-портрет',error);});
 function resize(){const {width,height}=host.getBoundingClientRect();camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);if(ready)renderer.render(scene,camera);}
 new ResizeObserver(resize).observe(host);resize();
 addEventListener('pointermove',e=>{if(reduced||e.pointerType==='touch')return;pointer.set(e.clientX,e.clientY);pointerActive=!e.target.closest('.accessories');});

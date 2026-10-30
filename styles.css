@@ -98,7 +98,7 @@
 .project-media video{pointer-events:none}
 .enso-media.has-phone video{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .enso-media canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.enso-media:not([data-intro="fallback"])>video{visibility:hidden}
+.enso-media.has-phone>video{visibility:hidden}
 .enso-media[data-intro="waiting"]:not([data-flight="static"])>canvas{visibility:hidden}
 .enso-media>canvas{z-index:1}
 .enso-stars{position:absolute;inset:0;pointer-events:none;opacity:.45}

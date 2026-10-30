@@ -8,6 +8,8 @@ const previewReady=()=>!steam||steam.dataset.previewReady?Promise.resolve():boun
  steam.addEventListener('preview-ready',resolve,{once:true});steam.addEventListener('error',resolve,{once:true});
 }),3500);
 let preparation;
+let fontsReady=false,imagesReady=false;
+document.fonts.ready.then(()=>{fontsReady=true;});
 if(window.portfolioReturnTo){
  const project=document.getElementById(window.portfolioReturnTo)?.closest('.project');
  const images=[...(project?.querySelectorAll('img')||[])];
@@ -19,10 +21,11 @@ if(window.portfolioReturnTo){
   if(host.dataset.loaded||host.dataset.arrival)return resolve();
   const observer=new MutationObserver(()=>{if(host.dataset.loaded||host.dataset.arrival){observer.disconnect();resolve();}});
   observer.observe(host,{attributes:true});
-  setTimeout(()=>{observer.disconnect();resolve();},8000);
+  setTimeout(()=>{observer.disconnect();resolve();},90000);
  });
  const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img,.steam-media .video-cover,.steam-phone-frame')];
- preparation=Promise.allSettled([document.fonts.ready,Promise.all(images.map(waitImage)),headReady,previewReady()]);
+ const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
+ preparation=Promise.allSettled([document.fonts.ready,imageReady,headReady]);
 }
 let ready=false;
 preparation.then(()=>{ready=true;});
@@ -37,13 +40,13 @@ else{
   document.documentElement.classList.remove('is-returning');
   document.documentElement.classList.add('is-loading');
  }
- let value=0,last=performance.now();
+ let value=0;
  await new Promise(resolve=>{
   const tick=now=>{
    if(!overlay.isConnected)return resolve();
-   const dt=Math.max(0,Math.min(now-last,40));last=Math.max(last,now);
    // Finish as soon as the destination is prepared; never simulate extra loading.
-   value=ready?100:reduced?0:Math.min(95,value+dt*.05);
+   const progress=Number(document.querySelector('#head-view').dataset.progress||0);
+   value=ready?100:Math.max(value,Math.min(95,progress*85+(fontsReady?5:0)+(imagesReady?5:0)));
    counter.setProgress(value,now);
    if(value===100)resolve();else requestAnimationFrame(tick);
   };

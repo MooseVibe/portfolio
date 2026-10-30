@@ -82,7 +82,7 @@ async function load(){
   asset.scene.position.y=-.0816;
   asset.scene.traverse(o=>{if(o.isMesh&&o.name==='ENSO_Screen')o.material=new THREE.MeshBasicMaterial({map:texture});});
   pivot.add(asset.scene);video.currentTime=0;
-  host.append(renderer.domElement);host.classList.add('has-phone');
+  host.append(renderer.domElement);
   renderer.domElement.style.visibility='hidden';
   const bounds=host.getBoundingClientRect();renderer.setSize(bounds.width,bounds.height,false);camera.aspect=bounds.width/bounds.height;camera.updateProjectionMatrix();
   pivot.position.y=.0816;
@@ -93,9 +93,10 @@ async function load(){
   setFlight(0);
   renderer.render(scene,camera);
   renderer.domElement.style.visibility='';
+  host.classList.add('has-phone');
   new ResizeObserver(()=>{const r=host.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();needsRender=true;}).observe(host);
   loaded=true;sync();
- }catch{renderer?.dispose();host.dataset.intro='fallback';if(visible)play();}
+ }catch(error){renderer?.dispose();renderer?.domElement.remove();host.classList.remove('has-phone');host.dataset.intro='fallback';console.warn('ENSŌ: 3D недоступно',error);if(visible)play();}
 }
 const observer=new IntersectionObserver(entries=>{
  const entry=entries[entries.length-1];
@@ -112,7 +113,7 @@ const observer=new IntersectionObserver(entries=>{
 observer.observe(host);
 const preloadObserver=new IntersectionObserver(entries=>{
  if(entries[0].isIntersecting){load();preloadObserver.disconnect();}
-},{rootMargin:'300px'});
+},{rootMargin:'1200px'});
 preloadObserver.observe(host);
 document.addEventListener('visibilitychange',sync);
 addEventListener('pagehide',event=>{renderer?.setAnimationLoop(null);video.pause();if(!event.persisted){observer.disconnect();preloadObserver.disconnect();if(hasFrameCallback)video.cancelVideoFrameCallback(videoFrameCallback);}});

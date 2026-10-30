@@ -18,3 +18,7 @@ The frame and screen mask in `steam-case/iphone-18-pro-*.png` are derived from A
 
 Loader digits use [Number Flow](https://github.com/barvian/number-flow) 0.6.2 by Maxwell Barvian, MIT. Vendored in `number-flow/` with LICENSE.md. In lite.mjs and ssr-DvIINv8w.mjs the esm-env BROWSER import is replaced with `typeof window !== "undefined"` for standalone browser ESM. Portfolio-specific glyph fill styling is added by loader-number.js; Number Flow animation logic is unchanged.
 
+## Meshoptimizer
+
+The portrait models use lossless geometry compression with [meshoptimizer](https://github.com/zeux/meshoptimizer) 1.3.0 by Arseny Kapoulkine, MIT. The browser decoder and its license are in `experiments/head/interactive/vendor/meshopt_decoder.mjs` and `MESHOPT-LICENSE.md`. Vertex values, morph targets and decoded texture pixels are preserved.
+

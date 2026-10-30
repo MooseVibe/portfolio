@@ -6,10 +6,14 @@
 <meta name="description" content="Проектирую мобильные приложения и веб-продукты: от исследования и сценариев до готового интерфейса.">
 <link rel="stylesheet" href="assets/site/serega-gentle.css">
 <link rel="stylesheet" href="assets/site/amounts-preview.css?v=6">
-<link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=experience-57">
-<link rel="modulepreload" href="loader-number.js?v=white-48">
+<link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css"><link rel="stylesheet" href="styles.css?v=network-58">
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.module.js"}}</script>
-<script type="module" src="main.js?v=misa-reset-54"></script>
+<link rel="modulepreload" href="loader-number.js?v=white-48">
+<link rel="modulepreload" href="head.js?v=network-58">
+<link rel="preload" href="experiments/head/interactive/head-beard-lossless.glb" as="fetch" crossorigin>
+<link rel="preload" href="experiments/head/interactive/glasses-lossless.glb" as="fetch" crossorigin>
+<link rel="preload" href="experiments/head/interactive/hat-web-lossless.glb" as="fetch" crossorigin>
+<script type="module" src="main.js?v=network-58"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
 </head>
@@ -37,11 +41,11 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(window.finishPortfolioLoading,12000);
+ const timeout=setTimeout(window.finishPortfolioLoading,100000);
 });
 </script>
 <div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
-<script type="module" src="loader.js?v=ready-55"></script>
+<script type="module" src="loader.js?v=network-58"></script>
 <a class="skip-link" href="#works">Перейти к работам</a>
 <header class="site-header container">
 <a class="identity" href="#top"><img src="assets/site/avatar.jpg" alt="" width="48" height="48"><span>Лось Илья</span></a>
@@ -56,7 +60,7 @@ window.portfolioLoading=new Promise(resolve=>{
 <main id="top">
 <section class="hero" aria-labelledby="intro-title">
 <div class="head-stage"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img hidden id="head-poster" src="assets/site/head-poster.png" alt="" width="860" height="580"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
-<div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon.png?v=original-2" alt="" width="78" height="55"></button><button id="hat-toggle" class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon.png?v=original-2" alt="" width="66" height="60"></button></div></div>
+<div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon-web.webp" alt="" width="78" height="55"></button><button id="hat-toggle" class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon-web.webp" alt="" width="66" height="60"></button></div></div>
 <div class="intro"><h1 id="intro-title">Привет!👋 Я Илья — продуктовый дизайнер</h1><div class="tags"><span>B2C</span><span>EdTech</span><span>FinTech</span></div><p>3+ года проектирую мобильные приложения и веб-сервисы: от исследования задачи и пользовательских сценариев до интерфейса.</p></div>
 </section>
 <section class="works" id="works" aria-label="Избранные работы">
@@ -71,7 +75,7 @@ window.portfolioLoading=new Promise(resolve=>{
  </div>
  <div class="project-media steam-media"><div class="steam-preview-phone"><div class="steam-phone-scene">
   <img class="steam-phone-frame" src="assets/site/steam-case/phone-front.webp" alt="" width="614" height="1230">
-  <div class="steam-phone-screen"><img class="video-cover" src="assets/site/steam-case/steam-login-after-v3.jpg" alt="" aria-hidden="true" width="750" height="1624"><video data-play-threshold="0.9" muted playsinline loop preload="auto" poster="assets/site/steam-case/steam-login-after-v3.jpg" aria-label="Подсказка с иллюстрацией для ввода логина Steam"><source src="assets/site/steam-case/steam-login-after-v3.mp4" type="video/mp4"></video></div>
+  <div class="steam-phone-screen"><img class="video-cover" src="assets/site/steam-case/steam-login-after-v3.jpg" alt="" aria-hidden="true" width="750" height="1624"><video data-play-threshold="0.9" muted playsinline loop preload="none" poster="assets/site/steam-case/steam-login-after-v3.jpg" aria-label="Подсказка с иллюстрацией для ввода логина Steam"><source src="assets/site/steam-case/steam-login-after-v3.mp4" type="video/mp4"></video></div>
  </div></div></div>
 </article>
 <article class="project" aria-labelledby="amounts-title">
@@ -86,7 +90,7 @@ window.portfolioLoading=new Promise(resolve=>{
   <div class="amounts-scene">
    <div class="amounts-wheel" aria-hidden="true"></div>
    <div class="amounts-phone" aria-hidden="true">
-    <img src="cases/payment-suggestions/media-3.png" alt="" width="1797" height="3770" loading="lazy">
+    <img src="cases/payment-suggestions/media-3-lossless.webp" alt="" width="1797" height="3770" loading="lazy">
     <div class="amounts-phone-chips"><div class="amounts-chip-row">
      <span class="amounts-chip amounts-chip--changing"><span class="amounts-chip-content"><span class="amounts-chip-icon" data-kind="gamepad" aria-hidden="true"><img class="amounts-gamepad" src="assets/site/tbank-gamepad.svg" alt="" width="12" height="12"><img class="amounts-history" src="assets/site/tbank-arrow-clock.svg" alt="" width="12" height="12"></span><span class="amounts-chip-label"><span class="amounts-morph">На распродажу 1&nbsp;000&nbsp;₽</span></span></span></span>
      <span class="amounts-chip">50&nbsp;₽</span><span class="amounts-chip">100&nbsp;₽</span><span class="amounts-chip">200&nbsp;₽</span><span class="amounts-chip">500&nbsp;₽</span>
@@ -103,9 +107,9 @@ window.portfolioLoading=new Promise(resolve=>{
   <p>Записываю расходы в Telegram-бота, а в мини-аппе слежу за бюджетом, конвертами и целями. Миса помогает замечать привычки в тратах и принимать более осознанные решения.</p>
  </div>
  <div class="misa-previews">
-  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-01-web-v3.jpg" aria-label="Миса — Главный экран и конверт"><source src="assets/site/misa/misa-01-web-v3.mp4" type="video/mp4"></video></div>
-  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-02-web-v3.jpg" aria-label="Миса — График и годовой обзор"><source src="assets/site/misa/misa-02-web-v3.mp4" type="video/mp4"></video></div>
-  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-03-web-v3.jpg" aria-label="Миса — Календарь и аналитика"><source src="assets/site/misa/misa-03-web-v3.mp4" type="video/mp4"></video></div>
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-01-ready-poster.jpg" aria-label="Миса — Главный экран и конверт"><source src="assets/site/misa/misa-01-web-v3.mp4" type="video/mp4"></video></div>
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-02-ready-poster.jpg" aria-label="Миса — График и годовой обзор"><source src="assets/site/misa/misa-02-web-v3.mp4" type="video/mp4"></video></div>
+  <div class="project-media misa-media"><video data-play-threshold="0.85" muted playsinline loop preload="none" poster="assets/site/misa/misa-03-ready-poster.jpg" aria-label="Миса — Календарь и аналитика"><source src="assets/site/misa/misa-03-web-v3.mp4" type="video/mp4"></video></div>
  </div>
 </article>
 <article class="project" aria-labelledby="enso-title">

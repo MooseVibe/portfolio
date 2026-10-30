@@ -22,7 +22,15 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=white-48');
+const loadHead=()=>import('./head.js?v=network-58').catch(error=>{
+ const host=document.querySelector('#head-view');
+ host.dataset.loaded='fallback';host.dataset.arrival='near';
+ document.querySelector('#head-poster').hidden=false;
+ stage.classList.add('is-fallback','is-ready');
+ document.querySelector('#glasses-toggle').disabled=true;
+ document.querySelector('#hat-toggle').disabled=true;
+ revealIntro();console.warn('Не удалось запустить 3D',error);
+});
 if(!window.portfolioReturnTo)loadHead();
 else{
  document.querySelector('#head-poster').hidden=false;
@@ -113,10 +121,22 @@ function syncProjectVideos(){
  }
 }
 for(const video of projectVideos)videoObserver.observe(video);
+// Start buffering nearby sections after the portrait has finished downloading.
+const videoPreloader=new IntersectionObserver(entries=>{
+ for(const {target,isIntersecting} of entries){
+  if(!isIntersecting)continue;
+  target.addEventListener('canplay',syncProjectVideos,{once:true});
+  target.preload='auto';if(target.readyState===0)target.load();videoPreloader.unobserve(target);
+  syncProjectVideos();
+ }
+},{rootMargin:'1200px 0px'});
+window.portfolioLoading?.then(()=>{
+ for(const video of projectVideos)if(video.preload==='none')videoPreloader.observe(video);
+});
 window.portfolioLoading?.then(syncProjectVideos);
 document.addEventListener('visibilitychange',syncProjectVideos);
-window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=smooth-entry-21');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
-addEventListener('pagehide',event=>{if(!event.persisted)videoObserver.disconnect();for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
+window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=network-58');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
+addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
 addEventListener('pageshow',event=>{if(event.persisted)syncProjectVideos();});
 const steamPhone=document.querySelector('.steam-preview-phone');
 if(steamPhone){
