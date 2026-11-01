@@ -20,10 +20,14 @@ const pmrem=new THREE.PMREMGenerator(renderer),studioMap=pmrem.fromScene(studio)
 for(const [x,y,z,power] of [[-3,4,5,95],[3,1,4,35],[2,3,-3,45]]){const light=new THREE.DirectionalLight(0xffffff,power/40);light.position.set(x,y,z);scene.add(light);}
 const loader=new GLTFLoader(),faces=[],target=new THREE.Vector2(),clarity={value:1},beardTone={value:1},reluctance={value:0};
 loader.setMeshoptDecoder(MeshoptDecoder);
+let downloadedBytes=0;
 async function loadModel(url){
  const response=await fetch(url,{priority:'low'});
  if(!response.ok)throw new Error(`Model HTTP ${response.status}`);
- return loader.parseAsync(await response.arrayBuffer(),new URL('.',new URL(url,location.href)).href);
+ const reader=response.body.getReader(),chunks=[];let size=0;
+ while(true){const {done,value}=await reader.read();if(done)break;chunks.push(value);size+=value.length;downloadedBytes+=value.length;host.dataset.progress=String(Math.min(1,downloadedBytes/4209480));}
+ const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
+ return loader.parseAsync(bytes.buffer,new URL('.',new URL(url,location.href)).href);
 }
 const glassesAsset=loadModel('./experiments/head/interactive/glasses-web-v2.glb').catch(error=>{glassesButton.disabled=true;console.warn('Очки не загрузились',error);return null;});
 const hatAsset=loadModel('./experiments/head/interactive/hat-web-v2.glb').catch(error=>{hatButton.disabled=true;console.warn('Шляпа не загрузилась',error);return null;});
@@ -139,7 +143,7 @@ const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{const dt=Math.min(c
 if(head&&ready){
 elapsed+=dt;
 let proximity=0,awayX=0,awayY=0;
-if(pointerActive&&!reduced&&elapsed>=1){
+if(pointerActive&&!reduced){
  const rect=host.getBoundingClientRect(),dx=pointer.x-(rect.left+rect.width/2),dy=pointer.y-(rect.top+rect.height*.56);
  const radius=rect.height*.58,d=Math.hypot(dx,dy);
  proximity=1-THREE.MathUtils.smoothstep(d,radius*.12,radius);

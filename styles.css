@@ -145,3 +145,10 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 .head-stage.is-upgrading.is-ready:not(.is-fallback) #head-view canvas{animation:none;opacity:1}
 @keyframes poster-arrive{from{opacity:0;transform:translateX(-50%) scale(.35);filter:blur(3px)}to{opacity:1;transform:translateX(-50%) scale(1);filter:blur(0)}}
 @media(prefers-reduced-motion:reduce){html:not(.is-loading) .head-stage.is-fallback #head-poster{animation:none}}
+
+/* The fallback capture includes controls; clip them out of the portrait layer. */
+#head-poster{clip-path:inset(0 24% 0 0)}
+.accessory img{user-select:none;-webkit-user-drag:none;pointer-events:none}
+.enso-phone-2d{position:relative;width:42%;height:92%;z-index:1}
+.enso-phone-2d>img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:2;pointer-events:none}
+.enso-media .enso-phone-2d>video{position:absolute;left:5.45%;top:2.24%;width:89.1%;height:95.5%;max-width:none;object-fit:fill;border-radius:12%;box-shadow:none}

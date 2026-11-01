@@ -20,7 +20,8 @@ if(window.portfolioReturnTo){
 }else{
  const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img')];
  const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
- preparation=bounded(Promise.allSettled([document.fonts.ready,imageReady]),900);
+ const headReady=new Promise(resolve=>{const poll=()=>{if(document.querySelector('#head-view')?.dataset.loaded)resolve();else setTimeout(poll,50);};poll();});
+ preparation=Promise.allSettled([bounded(Promise.allSettled([document.fonts.ready,imageReady]),900),headReady]);
 }
 let ready=false;
 preparation.then(()=>{ready=true;});
@@ -40,7 +41,7 @@ else{
   const tick=now=>{
    if(!overlay.isConnected)return resolve();
    // Finish as soon as the destination is prepared; never simulate extra loading.
-   value=ready?100:Math.max(value,(fontsReady?45:0)+(imagesReady?50:0));
+   value=ready?100:Math.max(value,(fontsReady?5:0)+(imagesReady?5:0)+Math.min(85,Number(document.querySelector('#head-view')?.dataset.progress||0)*85));
    counter.setProgress(value,now);
    if(value===100)resolve();else requestAnimationFrame(tick);
   };

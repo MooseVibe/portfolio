@@ -22,7 +22,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=delivery-68').catch(error=>{
+const loadHead=()=>import('./head.js?v=hero-69').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
@@ -31,14 +31,7 @@ const loadHead=()=>import('./head.js?v=delivery-68').catch(error=>{
  document.querySelector('#hat-toggle').disabled=true;
  revealIntro();console.warn('Не удалось запустить 3D',error);
 });
-if(!window.portfolioReturnTo){
- const slow=navigator.connection&&(navigator.connection.saveData||navigator.connection.downlink<2);
- window.portfolioLoading.then(()=>{
-  if(!slow)return loadHead();
-  // On slow links, do not spend bandwidth on 3D after the visitor scrolls to work.
-  setTimeout(()=>{const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();loadHead();}});observer.observe(document.querySelector('#head-view'));},3000);
- });
-}
+if(!window.portfolioReturnTo)loadHead();
 else{
  document.querySelector('#head-poster').hidden=false;
  stage.classList.add('is-fallback','is-ready');
@@ -81,7 +74,7 @@ window.portfolioLoading?.then(()=>{
 });
 addEventListener('pagehide',event=>{if(!event.persisted)for(const reveal of textReveals)reveal.stop();});
 
-const projectVideos=[...document.querySelectorAll('.project-media:not(.enso-media) video')];
+const projectVideos=[...document.querySelectorAll('.project-media video')];
 const steamVideo=document.querySelector('.steam-media video');
 if(steamVideo){
  const cover=steamVideo.parentElement.querySelector('.video-cover');
@@ -123,7 +116,7 @@ const videoObserver=new IntersectionObserver(entries=>{
   }
  }
  syncProjectVideos();
-},{threshold:[0,.35,.85,.9]});
+},{threshold:[0,.2,.35,.85,.9]});
 function syncProjectVideos(){
  for(const video of projectVideos){
   const end=video.buffered.length?video.buffered.end(video.buffered.length-1):0;
@@ -134,26 +127,31 @@ function syncProjectVideos(){
 }
 for(const video of projectVideos){video.addEventListener('canplaythrough',syncProjectVideos);video.addEventListener('progress',syncProjectVideos);videoObserver.observe(video);}
 // Buffer upcoming media after the lightweight entrance is ready.
-const videoPreloader=new IntersectionObserver(entries=>{
- for(const {target,isIntersecting} of entries){
-  if(!isIntersecting)continue;
+const preparedVideos=new Set();
+function prepareVideo(target){
+ if(preparedVideos.has(target))return;
+ preparedVideos.add(target);
   target.addEventListener('canplay',syncProjectVideos,{once:true});
   const connection=navigator.connection;
   if(connection&&(connection.saveData||connection.downlink<2)){const mobile=target.querySelector('source[media]');if(mobile)mobile.media='all';}
-  videoPreloader.unobserve(target);
+
   if(connection&&(connection.saveData||connection.downlink<2)){
    const source=target.querySelector('source[media]')||target.querySelector('source');
    fetch(source.src,{priority:'high'}).then(response=>{if(!response.ok)throw new Error('Video HTTP '+response.status);return response.blob();}).then(blob=>{target.src=URL.createObjectURL(blob);target.preload='auto';target.load();}).catch(()=>{target.preload='auto';target.load();});
   }else{target.preload='auto';if(target.readyState===0)target.load();}
-  syncProjectVideos();
+ syncProjectVideos();
+}
+const videoPreloader=new IntersectionObserver(entries=>{for(const {target,isIntersecting} of entries)if(isIntersecting){prepareVideo(target);videoPreloader.unobserve(target);}},{rootMargin:'1200px 0px'});
+window.portfolioLoading?.then(async()=>{
+ for(const video of projectVideos)videoPreloader.observe(video);
+ for(const video of projectVideos){
+  prepareVideo(video);
+  if(video.readyState<4)await new Promise(resolve=>{const done=()=>{clearTimeout(timer);video.removeEventListener('canplaythrough',done);video.removeEventListener('error',done);resolve();};const timer=setTimeout(done,8000);video.addEventListener('canplaythrough',done,{once:true});video.addEventListener('error',done,{once:true});});
  }
-},{rootMargin:navigator.connection&&(navigator.connection.saveData||navigator.connection.downlink<2)?'200px 0px':'1200px 0px'});
-window.portfolioLoading?.then(()=>{
- for(const video of projectVideos)if(video.preload==='none')videoPreloader.observe(video);
 });
 window.portfolioLoading?.then(syncProjectVideos);
 document.addEventListener('visibilitychange',syncProjectVideos);
-window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso.js?v=delivery-68');import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
+window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
 addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
 addEventListener('pageshow',event=>{if(event.persisted)syncProjectVideos();});
 const steamPhone=document.querySelector('.steam-preview-phone');
