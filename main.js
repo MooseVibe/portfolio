@@ -164,3 +164,6 @@ if(steamPhone){
  resize.observe(steamPhone);
  addEventListener('pagehide',event=>{if(!event.persisted)resize.disconnect();});
 }
+
+const ensoPhoneResize=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty('--enso-scale',Math.min(contentRect.width/614,contentRect.height/1230));});
+for(const phone of document.querySelectorAll('.enso-phone-2d'))ensoPhoneResize.observe(phone);

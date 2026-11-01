@@ -58,7 +58,7 @@
 .steam-preview-phone{position:relative;width:42%;height:92%}
 .steam-phone-scene{position:absolute;left:50%;top:50%;width:614px;height:1230px;transform:translate(-50%,-50%) scale(var(--steam-phone-scale,.5));transform-origin:center center}
 .steam-phone-frame,.steam-phone-screen{position:absolute;inset:0;width:100%;height:100%}
-.steam-phone-screen{mask-image:url('assets/site/steam-case/phone-front-mask.svg');-webkit-mask-image:url('assets/site/steam-case/phone-front-mask.svg');mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat}
+.steam-phone-screen{mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');-webkit-mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat}
 .steam-media .steam-phone-screen video,.steam-media .steam-phone-screen .video-cover{position:absolute;inset:0;width:750px;height:1624px;max-width:none;object-fit:fill;transform-origin:0 0;transform:matrix3d(0.729373333333,0,0,0,3.77161223881e-06,0.723657551479,0,1.12585439965e-07,0,0,1,0,33.5,27.5,0,1)}
 .amounts-media{background:#b9bfc3}
 .amounts-media img{display:block;width:100%;height:100%;object-fit:contain}
@@ -149,6 +149,9 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 /* The fallback capture includes controls; clip them out of the portrait layer. */
 #head-poster{clip-path:inset(0 24% 0 0)}
 .accessory img{user-select:none;-webkit-user-drag:none;pointer-events:none}
-.enso-phone-2d{position:relative;width:42%;height:92%;z-index:1}
-.enso-phone-2d>img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:2;pointer-events:none}
-.enso-media .enso-phone-2d>video{position:absolute;left:5.45%;top:2.24%;width:89.1%;height:95.5%;max-width:none;object-fit:fill;border-radius:12%;box-shadow:none}
+ .enso-phone-2d{position:relative;height:92%;aspect-ratio:614/1230;z-index:1}
+.enso-phone-scene{position:absolute;left:50%;top:50%;width:614px;height:1230px;transform:translate(-50%,-50%) scale(var(--enso-scale,.5));transform-origin:center}
+.enso-phone-scene>img,.enso-phone-screen{position:absolute;inset:0;width:100%;height:100%}
+.enso-phone-scene>img{pointer-events:none}
+.enso-phone-screen{mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');-webkit-mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat}
+.enso-media .enso-phone-screen>video{position:absolute;left:0;top:0;width:750px;height:1624px;max-width:none;object-fit:fill;border-radius:0;box-shadow:none;transform-origin:0 0;transform:matrix3d(0.729373333333,0,0,0,3.77161223881e-06,0.723657551479,0,1.12585439965e-07,0,0,1,0,33.5,27.5,0,1)}
