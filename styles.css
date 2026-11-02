@@ -155,3 +155,11 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 .enso-phone-scene>img{pointer-events:none}
 .enso-phone-screen{mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');-webkit-mask-image:url('assets/site/steam-case/phone-front-mask-v3.svg');mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat}
 .enso-media .enso-phone-screen>video{position:absolute;left:0;top:0;width:750px;height:1624px;max-width:none;object-fit:fill;border-radius:0;box-shadow:none;transform-origin:0 0;transform:matrix3d(0.729373333333,0,0,0,3.77161223881e-06,0.723657551479,0,1.12585439965e-07,0,0,1,0,33.5,27.5,0,1)}
+
+/* Native document transitions do not delay navigation or media loading. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:page-leave 120ms ease-out both}
+::view-transition-new(root){animation:page-enter 180ms ease-out both}
+@keyframes page-leave{to{opacity:0}}
+@keyframes page-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}

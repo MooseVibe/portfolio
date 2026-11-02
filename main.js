@@ -1,13 +1,4 @@
 import {seregaGentle} from './assets/site/serega-gentle.js';
-// Restore the destination before the return fade becomes visible.
-const returnTo=window.portfolioReturnTo||new URLSearchParams(location.search).get('returnTo');
-if(['steam-title','amounts-title'].includes(returnTo))window.portfolioLoading?.then(()=>{
- const target=document.getElementById(returnTo)?.closest('.project');
- if(!target)return;
- const url=new URL(location.href);url.searchParams.delete('returnTo');url.searchParams.delete('entry');url.hash=returnTo;
- history.replaceState({...history.state,portfolioReturnTo:returnTo},'',url.pathname+url.search+url.hash);
- target.scrollIntoView({behavior:'instant',block:'start'});
-});
 for(const id of ['steam-title','amounts-title']){
  const link=document.getElementById(id)?.closest('.project').querySelector('.project-link');
  link?.addEventListener('click',()=>history.replaceState({...history.state,portfolioReturnTo:id},'',location.href));
@@ -22,7 +13,7 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=hero-69').catch(error=>{
+const loadHead=()=>import('./head.js?v=touch-75').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
@@ -93,66 +84,44 @@ if(steamVideo){
  else steamVideo.addEventListener('loadeddata',preparePreview,{once:true});
 }
 const visibleVideos=new Set();
-const videoResetTimers=new Map();
+const framedVideos=new Map(projectVideos.map(video=>[
+ video.closest('.steam-preview-phone, .enso-phone-2d, .project-media'),video
+]));
 const videoObserver=new IntersectionObserver(entries=>{
  for(const entry of entries){
-  const video=entry.target;
-  if(video.closest('.misa-media')){
-   if(entry.isIntersecting){
-    clearTimeout(videoResetTimers.get(video));
-    videoResetTimers.delete(video);
-   }else if(!videoResetTimers.has(video)){
-    videoResetTimers.set(video,setTimeout(()=>{
-     videoResetTimers.delete(video);
-     if(video.currentTime>0)video.currentTime=0;
-    },2000));
-   }
-  }
-  const threshold=Number(video.dataset.playThreshold||.35);
-  if(entry.isIntersecting&&entry.intersectionRatio>=threshold)visibleVideos.add(entry.target);else visibleVideos.delete(entry.target);
-  if(!entry.isIntersecting&&entry.target===steamVideo){
-   steamVideo.pause();
-   if(steamVideo.currentTime>0)steamVideo.currentTime=0;
-  }
+  const video=framedVideos.get(entry.target);
+  if(entry.intersectionRatio<=.2){
+   visibleVideos.delete(video);
+   video.pause();
+   if(video.currentTime>0)video.currentTime=0;
+  }else if(entry.intersectionRatio>=.8)visibleVideos.add(video);
  }
  syncProjectVideos();
-},{threshold:[0,.2,.35,.85,.9]});
+},{threshold:[0,.2,.8]});
 function syncProjectVideos(){
  for(const video of projectVideos){
-  const end=video.buffered.length?video.buffered.end(video.buffered.length-1):0;
-  const slow=navigator.connection&&(navigator.connection.saveData||navigator.connection.downlink<2);
-  const buffered=video.currentTime>0||(video.readyState>=3&&(slow?end>=video.duration-.1:(video.readyState>=4||end>=Math.min(3,video.duration))));
+  const buffered=video.readyState>=3;
   if(buffered&&visibleVideos.has(video)&&!document.hidden&&!document.documentElement.classList.contains('is-loading')&&!document.documentElement.classList.contains('is-returning'))video.play().catch(()=>{});else video.pause();
  }
 }
-for(const video of projectVideos){video.addEventListener('canplaythrough',syncProjectVideos);video.addEventListener('progress',syncProjectVideos);videoObserver.observe(video);}
+for(const video of projectVideos){video.addEventListener('canplaythrough',syncProjectVideos);video.addEventListener('progress',syncProjectVideos);videoObserver.observe(video.closest('.steam-preview-phone, .enso-phone-2d, .project-media'));}
 // Buffer upcoming media after the lightweight entrance is ready.
 const preparedVideos=new Set();
 function prepareVideo(target){
  if(preparedVideos.has(target))return;
  preparedVideos.add(target);
   target.addEventListener('canplay',syncProjectVideos,{once:true});
-  const connection=navigator.connection;
-  if(connection&&(connection.saveData||connection.downlink<2)){const mobile=target.querySelector('source[media]');if(mobile)mobile.media='all';}
-
-  if(connection&&(connection.saveData||connection.downlink<2)){
-   const source=target.querySelector('source[media]')||target.querySelector('source');
-   fetch(source.src,{priority:'high'}).then(response=>{if(!response.ok)throw new Error('Video HTTP '+response.status);return response.blob();}).then(blob=>{target.src=URL.createObjectURL(blob);target.preload='auto';target.load();}).catch(()=>{target.preload='auto';target.load();});
-  }else{target.preload='auto';if(target.readyState===0)target.load();}
+ target.preload='auto';if(target.readyState===0)target.load();
  syncProjectVideos();
 }
-const videoPreloader=new IntersectionObserver(entries=>{for(const {target,isIntersecting} of entries)if(isIntersecting){prepareVideo(target);videoPreloader.unobserve(target);}},{rootMargin:'1200px 0px'});
-window.portfolioLoading?.then(async()=>{
+const videoPreloader=new IntersectionObserver(entries=>{for(const {target,isIntersecting} of entries)if(isIntersecting){prepareVideo(target);videoPreloader.unobserve(target);}},{rootMargin:'500px 0px'});
+window.portfolioLoading?.then(()=>{
  for(const video of projectVideos)videoPreloader.observe(video);
- for(const video of projectVideos){
-  prepareVideo(video);
-  if(video.readyState<4)await new Promise(resolve=>{const done=()=>{clearTimeout(timer);video.removeEventListener('canplaythrough',done);video.removeEventListener('error',done);resolve();};const timer=setTimeout(done,8000);video.addEventListener('canplaythrough',done,{once:true});video.addEventListener('error',done,{once:true});});
- }
 });
 window.portfolioLoading?.then(syncProjectVideos);
 document.addEventListener('visibilitychange',syncProjectVideos);
 window.portfolioLoading?.then(()=>setTimeout(()=>{import('./enso-stars.js?v=2');},window.portfolioReturnTo?0:1000));
-addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const timer of videoResetTimers.values())clearTimeout(timer);videoResetTimers.clear();for(const video of projectVideos)video.pause();});
+addEventListener('pagehide',event=>{if(!event.persisted){videoObserver.disconnect();videoPreloader.disconnect();}for(const video of projectVideos)video.pause();});
 addEventListener('pageshow',event=>{if(event.persisted)syncProjectVideos();});
 const steamPhone=document.querySelector('.steam-preview-phone');
 if(steamPhone){

@@ -133,11 +133,14 @@ ready=true;stage.classList.remove('is-fallback');stage.classList.add('is-ready')
 }).catch(error=>{showFallback();console.warn('Не удалось загрузить 3D-портрет',error);});
 function resize(){const {width,height}=host.getBoundingClientRect();camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);if(ready)renderer.render(scene,camera);}
 new ResizeObserver(resize).observe(host);resize();
-addEventListener('pointermove',e=>{if(reduced||e.pointerType==='touch')return;pointer.set(e.clientX,e.clientY);pointerActive=!e.target.closest('.accessories');});
-function releasePointer(){pointerActive=false;target.set(0,0);}
-document.documentElement.addEventListener('pointerleave',releasePointer);
-addEventListener('blur',releasePointer);
-addEventListener('scroll',releasePointer,{passive:true});
+// Touch devices keep 3D and accessories without installing cursor tracking.
+if(!reduced&&matchMedia('(hover: hover) and (pointer: fine)').matches){
+ addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;pointer.set(e.clientX,e.clientY);pointerActive=!e.target.closest('.accessories');});
+ const releasePointer=()=>{pointerActive=false;target.set(0,0);};
+ document.documentElement.addEventListener('pointerleave',releasePointer);
+ addEventListener('blur',releasePointer);
+ addEventListener('scroll',releasePointer,{passive:true});
+}
 let visible=true;new IntersectionObserver(entries=>visible=entries[0].isIntersecting).observe(host);
 const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{const dt=Math.min(clock.getDelta(),.05);if(!ready||!visible||document.hidden)return;const ease=reduced?1:1-Math.exp(-8*dt);
 if(head&&ready){

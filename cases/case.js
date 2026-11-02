@@ -45,7 +45,7 @@ const mediaPreloader=new IntersectionObserver(entries=>{
   if(!isIntersecting)continue;
   target.preload='auto';mediaPreloader.unobserve(target);
  }
-},{rootMargin:'1200px 0px'});
+},{rootMargin:'500px 0px'});
 for(const video of document.querySelectorAll('video'))mediaPreloader.observe(video);
 
 const caseVideos=[...document.querySelectorAll('[data-case-video]')];
@@ -72,15 +72,21 @@ for(const image of document.querySelectorAll('img[data-motion-src]')){
 if(caseVideos.length){
  const visible=new Set();
  const sync=video=>{
-  if(visible.has(video)&&!document.hidden&&(video.readyState>=4||video.currentTime>0))video.play().catch(()=>{});
+  if(visible.has(video)&&!document.hidden&&video.readyState>=3)video.play().catch(()=>{});
   else video.pause();
  };
+ const framedVideos=new Map(caseVideos.map(video=>[video.closest('.result-phone').querySelector('.result-phone-frame'),video]));
  const observer=new IntersectionObserver(entries=>{
-  for(const {target,isIntersecting,intersectionRatio} of entries){
-   if(isIntersecting&&intersectionRatio>=.2)visible.add(target);else visible.delete(target);
-   sync(target);
+  for(const {target,intersectionRatio} of entries){
+   const video=framedVideos.get(target);
+   if(intersectionRatio<=.2){
+    visible.delete(video);
+    video.pause();
+    if(video.currentTime>0)video.currentTime=0;
+   }else if(intersectionRatio>=.8)visible.add(video);
+   sync(video);
   }
- },{threshold:[0,.2]});
- for(const video of caseVideos){video.muted=true;video.addEventListener('canplaythrough',()=>sync(video));observer.observe(video);}
+ },{threshold:[0,.2,.8]});
+ for(const video of caseVideos){video.muted=true;video.addEventListener('canplay',()=>sync(video));observer.observe(video.closest('.result-phone').querySelector('.result-phone-frame'));}
  document.addEventListener('visibilitychange',()=>caseVideos.forEach(sync));
 }

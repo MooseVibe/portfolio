@@ -8,19 +8,19 @@ for(const phone of document.querySelectorAll('.payment-video-phone')){
  });
  fit.observe(phone);
  function sync(){
-  if(started&&inView&&!document.hidden&&(video.readyState>=4||video.currentTime>0))video.play().catch(()=>{});
+  if(started&&inView&&!document.hidden&&video.readyState>=3)video.play().catch(()=>{});
   else video.pause();
  }
  const observer=new IntersectionObserver(entries=>{
   for(const entry of entries){
-   inView=entry.intersectionRatio>0;
+   inView=entry.intersectionRatio>.2;
    if(!inView){started=false;video.pause();video.currentTime=0;}
    else if(entry.intersectionRatio>=.8)started=true;
    sync();
   }
- },{threshold:[0,.8]});
+ },{threshold:[0,.2,.8]});
  observer.observe(frame);
- video.addEventListener('canplaythrough',sync);
+ video.addEventListener('canplay',sync);
  document.addEventListener('visibilitychange',sync);
  addEventListener('pagehide',()=>video.pause());
  addEventListener('pageshow',sync);
