@@ -117,3 +117,6 @@
 .paper-case .result-phone-screen{mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat}
 .paper-case .result-phone video{display:block;width:750px;height:1624px;max-width:none;transform-origin:0 0}
 @media(max-width:650px){.paper-case .result-phone{max-width:100%;height:min(706px,calc(100svh - 110px));align-self:center}}
+
+.paper-case .video-play-toggle{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);padding:12px 18px;border-radius:24px;background:#282828;color:#fff;font-size:15px;white-space:nowrap;box-shadow:0 2px 20px #0008}
+.paper-case .video-play-toggle[hidden]{display:none}

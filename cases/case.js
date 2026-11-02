@@ -1,3 +1,4 @@
+import {createVideoPlayback} from '../assets/site/video-playback.js?v=mobile-76';
 let toastTimer;const toast=document.querySelector('#toast');
 for(const button of document.querySelectorAll('.email'))button.addEventListener('click',async()=>{
  const email='Iliushka00@bk.ru';try{await navigator.clipboard.writeText(email);toast.textContent='Email скопирован';}catch{toast.textContent=email;}
@@ -43,7 +44,7 @@ for(const details of document.querySelectorAll('details')){
 const mediaPreloader=new IntersectionObserver(entries=>{
  for(const {target,isIntersecting} of entries){
   if(!isIntersecting)continue;
-  target.preload='auto';mediaPreloader.unobserve(target);
+  target.preload='auto';if(target.networkState===0)target.load();mediaPreloader.unobserve(target);
  }
 },{rootMargin:'500px 0px'});
 for(const video of document.querySelectorAll('video'))mediaPreloader.observe(video);
@@ -71,10 +72,8 @@ for(const image of document.querySelectorAll('img[data-motion-src]')){
 }
 if(caseVideos.length){
  const visible=new Set();
- const sync=video=>{
-  if(visible.has(video)&&!document.hidden&&video.readyState>=3)video.play().catch(()=>{});
-  else video.pause();
- };
+ const playbacks=new Map(caseVideos.map(video=>[video,createVideoPlayback(video,video.closest('.result-phone'))]));
+ const sync=video=>playbacks.get(video)(visible.has(video)&&!document.hidden);
  const framedVideos=new Map(caseVideos.map(video=>[video.closest('.result-phone').querySelector('.result-phone-frame'),video]));
  const observer=new IntersectionObserver(entries=>{
   for(const {target,intersectionRatio} of entries){

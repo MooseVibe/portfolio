@@ -1,15 +1,16 @@
+import {createVideoPlayback} from '../../assets/site/video-playback.js?v=mobile-76';
 for(const phone of document.querySelectorAll('.payment-video-phone')){
  const video=phone.querySelector('video');
  const frame=phone.querySelector('.result-phone-frame');
  const scene=phone.querySelector('.result-phone-scene');
  let started=false,inView=false;
+ const playback=createVideoPlayback(video,phone);
  const fit=new ResizeObserver(()=>{
   scene.style.setProperty('--phone-scale',Math.min(phone.clientWidth/614,phone.clientHeight/1230));
  });
  fit.observe(phone);
  function sync(){
-  if(started&&inView&&!document.hidden&&video.readyState>=3)video.play().catch(()=>{});
-  else video.pause();
+  playback(started&&inView&&!document.hidden);
  }
  const observer=new IntersectionObserver(entries=>{
   for(const entry of entries){
