@@ -163,3 +163,6 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 @keyframes page-leave{to{opacity:0}}
 @keyframes page-enter{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
+
+/* The temporary portrait must not enlarge the mobile layout viewport. */
+@media(max-width:700px){#head-view{overflow:clip}}
