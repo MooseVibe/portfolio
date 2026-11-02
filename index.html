@@ -14,9 +14,12 @@ for(const type of ['pageswap','pagereveal'])addEventListener(type,event=>{
 <link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css?v=delivery-74"><link rel="stylesheet" href="styles.css?v=ready-77">
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.min.js"}}</script>
 <link rel="preload" href="assets/site/head-ready-both.webp" as="image" fetchpriority="high">
+<link rel="preload" href="assets/site/head-ready-hat.webp" as="image" fetchpriority="high">
+<link rel="preload" href="assets/site/head-ready-glasses.webp" as="image" fetchpriority="high">
+<link rel="preload" href="assets/site/head-ready-plain.webp" as="image" fetchpriority="high">
 <link rel="modulepreload" href="loader-number.js?v=white-48">
 
-<script type="module" src="main.js?v=ready-77"></script>
+<script type="module" src="main.js?v=ready-78"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
 </head>
@@ -45,7 +48,7 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:3000);
+ const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:15000);
  window.restorePortfolioReturn=()=>{
   const id=window.portfolioReturnTo;
   const target=document.getElementById(id)?.closest('.project');

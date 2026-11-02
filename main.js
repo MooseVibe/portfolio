@@ -1,4 +1,4 @@
-import './accessory-controls.js?v=ready-77';
+import './accessory-controls.js?v=ready-78';
 import {seregaGentle} from './assets/site/serega-gentle.js';
 for(const id of ['steam-title','amounts-title']){
  const link=document.getElementById(id)?.closest('.project').querySelector('.project-link');

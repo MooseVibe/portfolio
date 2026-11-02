@@ -18,7 +18,7 @@ for(const [button,name] of [[glasses,'очки Ray-Ban'],[hat,'ковбойск�
  playUISound('toggle');
 });
 Promise.allSettled(Object.values(previews).map(path=>{
- const image=new Image();image.src=new URL(path,import.meta.url).href;return image.decode();
+ const image=new Image();image.fetchPriority='high';image.src=new URL(path,import.meta.url).href;return image.decode();
 })).then(results=>{
  if(results.some(result=>result.status==='rejected')){window.resolvePortfolioAccessories?.();return;}
  showSelection();glasses.disabled=hat.disabled=false;
