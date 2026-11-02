@@ -1,3 +1,4 @@
+import {playUISound} from './assets/site/ui-sounds.js';
 import * as THREE from 'three';
 import {GLTFLoader} from './experiments/head/interactive/vendor/GLTFLoader.js';
 import {MeshoptDecoder} from './experiments/head/interactive/vendor/meshopt_decoder.mjs';
@@ -5,7 +6,7 @@ const host=document.querySelector('#head-view'), poster=document.querySelector('
 const glassesButton=document.querySelector('#glasses-toggle'),hatButton=document.querySelector('#hat-toggle');
 const stage=host.closest('.head-stage');
 function announceArrival(){if(host.dataset.arrival)return;host.dataset.arrival='near';document.dispatchEvent(new Event('head-near'));}
-function showFallback(){host.dataset.loaded='fallback';announceArrival();poster.hidden=false;stage.classList.add('is-fallback','is-ready');status.textContent='Статичный портрет';}
+function showFallback(){host.dataset.loaded='fallback';announceArrival();poster.hidden=false;stage.classList.add('is-fallback','is-ready');status.textContent='Статичный портрет';glassesButton.disabled=hatButton.disabled=true;delete document.querySelector('.accessories').dataset.ready;window.resolvePortfolioHead?.();}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});}catch(error){showFallback();console.warn(error);}
@@ -21,7 +22,7 @@ const loader=new GLTFLoader(),faces=[],target=new THREE.Vector2(),clarity={value
 loader.setMeshoptDecoder(MeshoptDecoder);
 let downloadedBytes=0;
 async function loadModel(url){
- const response=await fetch(url,{priority:'low'});
+ const response=await fetch(url,{priority:'high'});
  if(!response.ok)throw new Error(`Model HTTP ${response.status}`);
  const reader=response.body.getReader(),chunks=[];let size=0;
  while(true){const {done,value}=await reader.read();if(done)break;chunks.push(value);size+=value.length;downloadedBytes+=value.length;host.dataset.progress=String(Math.min(1,downloadedBytes/4209480));}
@@ -70,7 +71,7 @@ function gelatine(button){
  accessoryPulses.get(button)?.cancel();
  accessoryPulses.set(button,button.animate([{opacity:0,scale:'1 1'},{opacity:1,scale:'.9 1.1',offset:.25},{opacity:1,scale:'1.1 .9',offset:.5},{opacity:1,scale:'.95 1.05',offset:.75},{opacity:1,scale:'1 1'}],{duration:500,easing:'ease'}));
 }
-for(const button of [glassesButton,hatButton])button.addEventListener('accessory-change',()=>{accessories(true);gelatine(button);});
+for(const [button,name] of [[glassesButton,'очки Ray-Ban'],[hatButton,'ковбойскую шляпу']])button.addEventListener('click',()=>{const on=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(on));button.setAttribute('aria-label',`${on?'Снять':'Надеть'} ${name}`);accessories(true);gelatine(button);playUISound('toggle');});
 loadModel('./experiments/head/interactive/head-beard-web-v2.glb').then(async gltf=>{
  head=gltf.scene;scene.add(head);
  head.traverse(o=>{if(!o.isMesh)return;if(o.morphTargetDictionary?.CheekDefinition!==undefined){faces.push(o);o.morphTargetInfluences[o.morphTargetDictionary.CheekDefinition]=1.25;}
@@ -127,7 +128,7 @@ for(const texture of textures){
 if(renderer.compileAsync)await renderer.compileAsync(scene,camera);
 if(upgrading)await Promise.allSettled(poster.getAnimations().map(animation=>animation.finished));
 renderer.render(scene,camera);poster.hidden=true;
-status.textContent='3D-портрет загружен';glassesButton.disabled=hatButton.disabled=false;document.querySelector('.accessories').dataset.ready='true';host.dataset.loaded='true';
+status.textContent='3D-портрет загружен';glassesButton.disabled=hatButton.disabled=false;document.querySelector('.accessories').dataset.ready='true';host.dataset.loaded='true';window.resolvePortfolioHead?.();
 if(window.portfolioLoading)await window.portfolioLoading;
 ready=true;stage.classList.remove('is-fallback');stage.classList.add('is-ready');
 }).catch(error=>{showFallback();console.warn('Не удалось загрузить 3D-портрет',error);});

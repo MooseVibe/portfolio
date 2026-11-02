@@ -13,7 +13,7 @@ if(window.portfolioReturnTo){
 }else{
  const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img')];
  const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
- const preparation=Promise.allSettled([bounded(Promise.allSettled([document.fonts.ready,imageReady]),900),window.portfolioAccessoriesReady]);
+ const preparation=Promise.allSettled([bounded(Promise.allSettled([document.fonts.ready,imageReady]),900),bounded(window.portfolioHeadReady,30000)]);
 let ready=false;
 preparation.then(()=>{ready=true;});
  const {createLoaderNumber}=await import('./loader-number.js?v=white-48').catch(()=>({createLoaderNumber:element=>({setProgress:value=>{element.textContent=String(Math.round(value));},settled:()=>Promise.resolve()})}));
@@ -23,7 +23,7 @@ preparation.then(()=>{ready=true;});
   const tick=now=>{
    if(!overlay.isConnected)return resolve();
    // Finish as soon as the destination is prepared; never simulate extra loading.
-   value=ready?100:Math.max(value,(fontsReady?5:0)+(imagesReady?5:0));
+   value=ready?100:Math.max(value,(fontsReady?5:0)+(imagesReady?5:0)+Math.min(85,Number(document.querySelector('#head-view')?.dataset.progress||0)*85));
    counter.setProgress(value,now);
    if(value===100)resolve();else requestAnimationFrame(tick);
   };

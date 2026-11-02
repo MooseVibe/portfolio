@@ -13,13 +13,10 @@ for(const type of ['pageswap','pagereveal'])addEventListener(type,event=>{
 <link rel="stylesheet" href="assets/site/amounts-preview.css?v=6">
 <link rel="icon" type="image/svg+xml" href="assets/site/favicon.svg?v=1791550172"><link rel="stylesheet" href="assets/site/fonts.css?v=delivery-74"><link rel="stylesheet" href="styles.css?v=ready-77">
 <script type="importmap">{"imports":{"three":"./experiments/head/interactive/vendor/three.min.js"}}</script>
-<link rel="preload" href="assets/site/head-ready-both.webp" as="image" fetchpriority="high">
-<link rel="preload" href="assets/site/head-ready-hat.webp" as="image" fetchpriority="high">
-<link rel="preload" href="assets/site/head-ready-glasses.webp" as="image" fetchpriority="high">
-<link rel="preload" href="assets/site/head-ready-plain.webp" as="image" fetchpriority="high">
+<link rel="preload" href="assets/site/head-poster.webp" as="image" fetchpriority="high">
 <link rel="modulepreload" href="loader-number.js?v=white-48">
 
-<script type="module" src="main.js?v=ready-78"></script>
+<script type="module" src="main.js?v=scene-79"></script>
 <script type="module" src="amounts-preview.js?v=7"></script>
 <noscript><style>#head-poster[hidden]{display:block}</style></noscript>
 </head>
@@ -32,7 +29,7 @@ window.portfolioReturnTo=['steam-title','amounts-title'].includes(returnTarget)?
 if(location.hash)history.replaceState(history.state,'',location.pathname+location.search);
 scrollTo({top:0,left:0,behavior:'instant'});
 document.documentElement.classList.add(window.portfolioReturnTo?'is-returning':'is-loading');
-window.portfolioAccessoriesReady=new Promise(resolve=>{window.resolvePortfolioAccessories=resolve;});
+window.portfolioHeadReady=new Promise(resolve=>{window.resolvePortfolioHead=resolve;});
 window.portfolioLoading=new Promise(resolve=>{
  let finished=false;
  window.finishPortfolioLoading=()=>{
@@ -48,7 +45,7 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:15000);
+ const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:35000);
  window.restorePortfolioReturn=()=>{
   const id=window.portfolioReturnTo;
   const target=document.getElementById(id)?.closest('.project');
@@ -62,7 +59,7 @@ window.portfolioLoading=new Promise(resolve=>{
 });
 </script>
 <div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
-<script type="module" src="loader.js?v=ready-77"></script>
+<script type="module" src="loader.js?v=scene-79"></script>
 <a class="skip-link" href="#works">Перейти к работам</a>
 <header class="site-header container">
 <a class="identity" href="#top"><img src="assets/site/avatar-144.webp" alt="" width="48" height="48" draggable="false"><span>Лось Илья</span></a>
@@ -76,7 +73,7 @@ window.portfolioLoading=new Promise(resolve=>{
 </header>
 <main id="top">
 <section class="hero" aria-labelledby="intro-title">
-<div class="head-stage is-fallback is-ready"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img id="head-poster" fetchpriority="high" src="assets/site/head-ready-both.webp" alt="" width="1320" height="728" draggable="false"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
+<div class="head-stage is-fallback is-ready"><div id="head-view" role="img" aria-label="3D-портрет Ильи, реагирующий на движение мыши"><img id="head-poster" fetchpriority="high" src="assets/site/head-poster.webp" alt="" width="1320" height="728" draggable="false"><span id="head-status" class="sr-only" role="status">Загружается 3D-портрет</span></div>
 <div class="accessories" aria-label="Аксессуары"><button id="glasses-toggle" disabled class="accessory" aria-label="Снять очки Ray-Ban" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/glasses-icon-web.webp" alt="" width="78" height="55" draggable="false"></button><button id="hat-toggle" disabled class="accessory" aria-label="Снять ковбойскую шляпу" aria-pressed="true"><svg class="accessory-ring" aria-hidden="true"><circle cx="50%" cy="50%" r="50%"/></svg><img src="assets/site/hat-icon-web.webp" alt="" width="66" height="60" draggable="false"></button></div></div>
 <div class="intro"><h1 id="intro-title">Привет!👋 Я Илья — продуктовый дизайнер</h1><div class="tags"><span>B2C</span><span>EdTech</span><span>FinTech</span></div><p>3+ года проектирую мобильные приложения и веб-сервисы: от исследования задачи и пользовательских сценариев до интерфейса.</p></div>
 </section>
