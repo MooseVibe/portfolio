@@ -1,4 +1,9 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html lang="ru"><head><script>
+// A browser may skip a cross-document fade during slow or interrupted navigation.
+for(const type of ['pageswap','pagereveal'])addEventListener(type,event=>{
+ event.viewTransition?.ready.catch(()=>{});
+});
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Логин Steam — Т-Банк · Илья Лось</title><meta name="description" content="Бенчмаркинг, гипотезы, иллюстрация и финальный сценарий подсказки для логина Steam в Т-Банке.">
 <link rel="icon" type="image/svg+xml" href="../../assets/site/favicon.svg"><link rel="stylesheet" href="../../assets/site/fonts.css?v=delivery-74"><link rel="stylesheet" href="../../styles.css?v=touch-75"><link rel="stylesheet" href="../paper-case.css?v=payment-50"><link rel="stylesheet" href="../image-zoom.css?v=2"></head><body class="paper-case">
 <a class="skip-link" href="#case-content">Перейти к кейсу</a><header class="site-header container">
