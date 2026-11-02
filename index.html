@@ -45,7 +45,7 @@ window.portfolioLoading=new Promise(resolve=>{
   resolve();
   setTimeout(()=>{overlay?.remove();document.documentElement.classList.remove('is-finishing');},!animated||matchMedia('(prefers-reduced-motion:reduce)').matches?0:700);
  };
- const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:35000);
+ const timeout=setTimeout(window.finishPortfolioLoading,window.portfolioReturnTo?4500:95000);
  window.restorePortfolioReturn=()=>{
   const id=window.portfolioReturnTo;
   const target=document.getElementById(id)?.closest('.project');
@@ -59,7 +59,7 @@ window.portfolioLoading=new Promise(resolve=>{
 });
 </script>
 <div id="site-loader" aria-label="Загрузка портфолио" role="status"><div class="loader-count" aria-hidden="true"><span class="loader-number"></span></div></div>
-<script type="module" src="loader.js?v=scene-79"></script>
+<script type="module" src="loader.js?v=scene-80"></script>
 <a class="skip-link" href="#works">Перейти к работам</a>
 <header class="site-header container">
 <a class="identity" href="#top"><img src="assets/site/avatar-144.webp" alt="" width="48" height="48" draggable="false"><span>Лось Илья</span></a>

@@ -13,7 +13,7 @@ if(window.portfolioReturnTo){
 }else{
  const images=[...document.querySelectorAll('.site-header img,#head-poster,.accessory img')];
  const imageReady=Promise.all(images.map(waitImage)).then(()=>{imagesReady=true;});
- const preparation=Promise.allSettled([bounded(Promise.allSettled([document.fonts.ready,imageReady]),900),bounded(window.portfolioHeadReady,30000)]);
+ const preparation=Promise.allSettled([bounded(Promise.allSettled([document.fonts.ready,imageReady]),900),bounded(window.portfolioHeadReady,90000)]);
 let ready=false;
 preparation.then(()=>{ready=true;});
  const {createLoaderNumber}=await import('./loader-number.js?v=white-48').catch(()=>({createLoaderNumber:element=>({setProgress:value=>{element.textContent=String(Math.round(value));},settled:()=>Promise.resolve()})}));
