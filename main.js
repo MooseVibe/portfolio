@@ -1,3 +1,4 @@
+import './accessory-controls.js?v=ready-77';
 import {seregaGentle} from './assets/site/serega-gentle.js';
 for(const id of ['steam-title','amounts-title']){
  const link=document.getElementById(id)?.closest('.project').querySelector('.project-link');
@@ -13,13 +14,11 @@ const textReveals=[],introText=[...document.querySelectorAll('.intro h1,.intro .
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stage=document.querySelector('.head-stage');
 let started=false;
-const loadHead=()=>import('./head.js?v=touch-75').catch(error=>{
+const loadHead=()=>import('./head.js?v=ready-77').catch(error=>{
  const host=document.querySelector('#head-view');
  host.dataset.loaded='fallback';host.dataset.arrival='near';
  document.querySelector('#head-poster').hidden=false;
  stage.classList.add('is-fallback','is-ready');
- document.querySelector('#glasses-toggle').disabled=true;
- document.querySelector('#hat-toggle').disabled=true;
  revealIntro();console.warn('Не удалось запустить 3D',error);
 });
 if(!window.portfolioReturnTo)loadHead();
@@ -59,8 +58,6 @@ window.portfolioLoading?.then(()=>{
  if(host.dataset.loaded||host.dataset.arrival)return;
  document.querySelector('#head-poster').hidden=false;
  stage.classList.add('is-fallback','is-ready');
- document.querySelector('#glasses-toggle').disabled=true;
- document.querySelector('#hat-toggle').disabled=true;
  revealIntro();
 });
 addEventListener('pagehide',event=>{if(!event.persisted)for(const reveal of textReveals)reveal.stop();});

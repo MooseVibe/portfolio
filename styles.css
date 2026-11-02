@@ -166,3 +166,5 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 
 /* The temporary portrait must not enlarge the mobile layout viewport. */
 @media(max-width:700px){#head-view{overflow:clip}}
+
+.accessories:not([data-ready]){visibility:hidden!important}
