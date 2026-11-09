@@ -168,3 +168,6 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 @media(max-width:700px){#head-view{overflow:clip}}
 
 .accessories:not([data-ready]){visibility:hidden!important}
+
+/* Временно скрыто по просьбе Ильи; содержимое сохранено для переработки. */
+.experience,.site-footer{display:none}
