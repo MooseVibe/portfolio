@@ -2600,7 +2600,7 @@ var LiquidGlass = class _LiquidGlass {
       this._sceneCtx.clearRect(0, 0, width, height);
     }
     // Portfolio patch: keep uncaptured pixels dark during resize/capture.
-    this._sceneCtx.fillStyle = "#111111";
+    this._sceneCtx.fillStyle = "#212121";
     this._sceneCtx.fillRect(0, 0, width, height);
   }
   _glassHasDynamicContributors(currentGlass, sampleRect, rootRect, dpr) {

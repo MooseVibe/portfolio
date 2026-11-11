@@ -1,8 +1,7 @@
-import {LiquidGlass} from '../assets/site/liquidglass/index.js?v=animated-scene-4';
+import {LiquidGlass} from '../assets/site/liquidglass/index.js?v=frost-6';
 
 const header=document.querySelector('.paper-case .site-header');
-const switcher=document.querySelector('.case-switcher');
-if(header&&switcher){
+if(header){
  let previousY=Math.max(0,scrollY),travel=0;
  const syncHeader=()=>{
   const y=Math.max(0,scrollY),delta=y-previousY;
@@ -23,21 +22,19 @@ if(header&&switcher){
  });
  syncHeader();
  addEventListener('scroll',syncHeader,{passive:true});
- // Dark Glass preset from the upstream demo; radii follow our UI geometry.
- const darkGlass={brightness:-.3,blurAmount:.4,floating:false};
- header.dataset.config=JSON.stringify({...darkGlass,cornerRadius:0,zRadius:12});
- switcher.dataset.config=JSON.stringify({...darkGlass,cornerRadius:26,zRadius:26});
+ // Use the library glass optics without the additional frost overlay.
+ const neutralGlass={brightness:0,blurAmount:.4,floating:false};
+ header.dataset.config=JSON.stringify({...neutralGlass,cornerRadius:0,zRadius:12});
  const selection=document.body.style.userSelect;
  const webkitSelection=document.body.style.webkitUserSelect;
  try{
   for(const group of document.querySelectorAll('main,.case-body,.case-section,.hypotheses-list,.hypothesis,.result-comparisons,.result-row,.result-copy,.case-columns,.case-column,.context-images,.final-flow>div,main p:has(img),.case-image,.image-link,.image-zoom-trigger,details,.details-body'))group.setAttribute('data-glass-group','');
   await document.fonts.ready;
-  const glass=await LiquidGlass.init({root:document.body,glassElements:[header,switcher]});
+  const glass=await LiquidGlass.init({root:document.body,glassElements:[header]});
   // The library disables selection on its root, but case text must stay copyable.
   document.body.style.userSelect=selection;
   document.body.style.webkitUserSelect=webkitSelection;
   header.classList.add('has-liquid-glass');
-  switcher.classList.add('has-liquid-glass');
   let frame;
   const refresh=()=>{if(frame)return;frame=requestAnimationFrame(()=>{frame=null;glass.markChanged();});};
   addEventListener('scroll',refresh,{passive:true});

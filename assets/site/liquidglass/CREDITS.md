@@ -6,7 +6,7 @@ License: MIT (as declared by upstream package and README).
 The distributed ES module bundles html-to-image 1.11.11 (MIT).
 Downloaded from https://cdn.jsdelivr.net/npm/@ybouane/liquidglass@1.0.3/dist/index.js
 
-Local patch: the empty compositing-scene fill is #111111 instead of white, matching this dark portfolio during asynchronous captures and resize.
+Local patch: the empty compositing-scene fill is #212121 instead of white, matching this dark portfolio during asynchronous captures and resize.
 
 Performance patch: data-glass-group marks layout-only wrappers. These are traversed in paint order and only intersecting leaves are rasterised; groups are excluded from startup prewarming. During a disclosure animation only its summary is considered. Fully offscreen glass panels skip rendering. This avoids repeated snapshots of the full case while its height changes.
 
