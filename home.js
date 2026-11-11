@@ -16,42 +16,40 @@ heroSize.observe(stage);
 fitHero();
 addEventListener('pagehide',event=>{if(!event.persisted)heroSize.disconnect();});
 
-// Match the corner holds to the actual perimeter so pauses land on the nodes.
+// Animate four clipped gradients using compositor transforms, not SVG stroke repaint.
 const circuit=document.querySelector('.grid-circuit');
+const lanes=[...circuit.querySelectorAll('.circuit-lane i')];
 let pulseAnimations=[];
 const pulseSize=new ResizeObserver(()=>{
  if(!pulseAnimations.length)return;
- const time=pulseAnimations[0].currentTime;
- startPulse(time);
+ startPulse(pulseAnimations[0].currentTime);
 });
 function startPulse(time=0){
  for(const animation of pulseAnimations)animation.cancel();
  const {width,height}=circuit.getBoundingClientRect();
- const horizontal=width/(2*(width+height));
- const duration=13500;
+ const perimeter=2*(width+height);
+ const horizontal=width/perimeter;
+ const tail=perimeter*.072;
+ circuit.style.setProperty('--pulse-tail',`${tail}px`);
  const stops=[
-  [0,0],
-  [10*horizontal,horizontal*100],
-  [10*horizontal+.5,horizontal*100],
-  [5.5,50],[6,50],
-  [6+10*horizontal,50+horizontal*100],
-  [6.5+10*horizontal,50+horizontal*100],
-  [11.5,100],[13.5,100]
+  [0,0],[10*horizontal,width],[10*horizontal+.5,width],
+  [5.5,width+height],[6,width+height],
+  [6+10*horizontal,2*width+height],[6.5+10*horizontal,2*width+height],
+  [11.5,perimeter],[13.5,perimeter]
  ];
- pulseAnimations=[...circuit.querySelectorAll('.circuit-trace')].map(trace=>{
-  const tail=parseFloat(trace.style.getPropertyValue('--tail-offset'));
-  const frames=stops.map(([seconds,position],index)=>({offset:seconds/13.5,strokeDashoffset:`${tail-position}px`,opacity:index===0&&tail>0?0:1}));
-  // Do not wrap the unborn tail onto the last side of the closed path.
-  if(tail>0)frames.splice(1,0,
-   {offset:(tail/10)/13.5,strokeDashoffset:'0px',opacity:0},
-   {offset:(tail/10+.01)/13.5,strokeDashoffset:'-.1px',opacity:1}
-  );
-  return trace.animate(frames,{duration,iterations:Infinity,easing:'linear'});
- });
- pulseAnimations.push(circuit.querySelector('.circuit-pulse').animate([
+ const transforms=[
+  distance=>`translate3d(${distance-tail}px,0,0)`,
+  distance=>`translate3d(0,${distance-width-tail}px,0)`,
+  distance=>`translate3d(${2*width+height-distance}px,0,0)`,
+  distance=>`translate3d(0,${perimeter-distance}px,0)`
+ ];
+ pulseAnimations=lanes.map((lane,index)=>lane.animate(stops.map(([seconds,distance])=>({
+  offset:seconds/13.5,transform:transforms[index](distance)
+ })),{duration:13500,iterations:Infinity,easing:'linear'}));
+ pulseAnimations.push(circuit.animate([
   {offset:0,opacity:1},{offset:11.5/13.5,opacity:1},
   {offset:11.6/13.5,opacity:0},{offset:1,opacity:0}
- ],{duration,iterations:Infinity,easing:'linear'}));
+ ],{duration:13500,iterations:Infinity,easing:'linear'}));
  for(const animation of pulseAnimations)animation.currentTime=time;
 }
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
