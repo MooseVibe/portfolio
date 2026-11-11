@@ -22,12 +22,8 @@
 .node-tr,.node-br{left:calc(100% - var(--rail) - .5px)}
 /* One fading trail follows all four corners, then rests before the next lap. */
 .grid-circuit{position:absolute;left:calc(var(--rail) + .5px);top:calc(var(--row) + .5px);width:calc(100% - 2*var(--rail) - 1px);height:calc(100% - 2*var(--row) - 1px);overflow:visible;fill:none;stroke:#00be7b;stroke-width:1px}
-.circuit-trace{stroke-dasharray:.32 99.68;stroke-dashoffset:var(--tail-offset);animation:circuit-lap 12s linear infinite}
-.circuit-pulse{opacity:0;animation:circuit-visibility 12s linear infinite}
-.is-loading .circuit-trace,.is-loading .circuit-pulse,.is-returning .circuit-trace,.is-returning .circuit-pulse{animation-play-state:paused}
-@keyframes circuit-lap{0%{stroke-dashoffset:var(--tail-offset)}83.3333%,100%{stroke-dashoffset:calc(var(--tail-offset) - 100px)}}
-@keyframes circuit-visibility{0%,83.3333%{opacity:1}84%,100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.circuit-pulse{display:none}.circuit-trace{animation:none}}
+.circuit-trace{stroke-dasharray:.32 99.68;stroke-dashoffset:var(--tail-offset)}
+.circuit-pulse{opacity:0}
 .home-redesign .site-header .pill{background:#ffffff1a;outline:1px solid #4d4d4d;outline-offset:1px;min-height:36px}
 .home-redesign .site-header .telegram-icon{padding:8px;width:40px;height:40px;min-height:40px;border-radius:50%}
 .home-redesign .site-header .pill:hover{background:#ffffff26}
