@@ -127,10 +127,10 @@
 .paper-case .site-header .telegram-icon{padding:8px;width:40px;height:40px;min-height:40px;border-radius:50%}
 .paper-case .site-header .pill:hover{background:#ffffff26}
 @media(max-width:700px){
- .paper-case .site-header{height:64px;min-height:64px;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:12px;padding:0 32px}
- .paper-case .site-header .identity{display:flex;font-size:18px;gap:8px}
+ .paper-case .site-header{height:64px;min-height:64px;flex-wrap:nowrap;align-items:center;justify-content:center;gap:12px;padding:0 32px}
+ .paper-case .site-header .identity{display:none}
  .paper-case .site-header .identity img{width:32px;height:32px}
- .paper-case .site-header .contact-links{width:auto;gap:10px;justify-content:flex-end}
+ .paper-case .site-header .contact-links{width:auto;gap:10px;justify-content:center}
  .paper-case .site-header .pill{font-size:14px;padding:7px 10px}
  .paper-case .site-header .telegram-icon{padding:7px;width:36px;height:36px;min-height:36px}
 }
