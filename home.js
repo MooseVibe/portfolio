@@ -40,7 +40,13 @@ function startPulse(time=0){
  ];
  pulseAnimations=[...circuit.querySelectorAll('.circuit-trace')].map(trace=>{
   const tail=parseFloat(trace.style.getPropertyValue('--tail-offset'));
-  return trace.animate(stops.map(([seconds,position])=>({offset:seconds/13.5,strokeDashoffset:`${tail-position}px`})),{duration,iterations:Infinity,easing:'linear'});
+  const frames=stops.map(([seconds,position],index)=>({offset:seconds/13.5,strokeDashoffset:`${tail-position}px`,opacity:index===0&&tail>0?0:1}));
+  // Do not wrap the unborn tail onto the last side of the closed path.
+  if(tail>0)frames.splice(1,0,
+   {offset:(tail/10)/13.5,strokeDashoffset:'0px',opacity:0},
+   {offset:(tail/10+.01)/13.5,strokeDashoffset:'-.1px',opacity:1}
+  );
+  return trace.animate(frames,{duration,iterations:Infinity,easing:'linear'});
  });
  pulseAnimations.push(circuit.querySelector('.circuit-pulse').animate([
   {offset:0,opacity:1},{offset:11.5/13.5,opacity:1},
