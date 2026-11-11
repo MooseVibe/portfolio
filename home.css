@@ -34,9 +34,9 @@
 .lane-right i{background:linear-gradient(to bottom,#00be7b00,#00be7bd9)}
 .lane-bottom i{background:linear-gradient(to left,#00be7b00,#00be7bd9)}
 .lane-left i{background:linear-gradient(to top,#00be7b00,#00be7bd9)}
-.home-redesign .site-header .pill{background:#ffffff1a;outline:1px solid #4d4d4d;outline-offset:1px;min-height:36px}
-.home-redesign .site-header .telegram-icon{padding:8px;width:40px;height:40px;min-height:40px;border-radius:50%}
-.home-redesign .site-header .pill:hover{background:#ffffff26}
+
+
+
 .portrait-fit{position:relative;width:100%}
 .home-redesign .head-stage{position:absolute;top:0;left:50%;width:659px;max-width:none;margin:0;transform:translateX(-50%) scale(var(--portrait-scale,1));transform-origin:top center}
 .home-redesign #head-view{width:659px;max-width:none}
@@ -98,3 +98,11 @@
 .home-footer-row::before{left:calc(var(--rail) + .5px)}
 .home-footer-row::after{left:calc(100% - var(--rail) - .5px)}
 .home-footer-row>.grid-block{z-index:1}
+
+
+.home-redesign .intro p{white-space:pre-line}
+
+@keyframes case-underline-green{0%{transform:scaleX(1);transform-origin:right center;background:currentColor}42%{transform:scaleX(0);transform-origin:right center;background:currentColor}43%{transform:scaleX(0);transform-origin:left center;background:#00be7b}100%{transform:scaleX(1);transform-origin:left center;background:#00be7b}}
+@media(hover:hover){.home-redesign .project-link:hover::after{animation:case-underline-green .75s cubic-bezier(.76,0,.24,1) both}}
+.home-redesign .project-link:focus-visible::after{animation:case-underline-green .75s cubic-bezier(.76,0,.24,1) both}
+@media(prefers-reduced-motion:reduce){.home-redesign .project-link:hover::after,.home-redesign .project-link:focus-visible::after{background:#00be7b}}

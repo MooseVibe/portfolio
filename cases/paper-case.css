@@ -123,9 +123,9 @@
 
 /* Match the homepage controls while retaining case glass and scroll behavior. */
 .paper-case .site-header{height:clamp(64px,6.25434vw,90px);padding-inline:calc(clamp(16px,6.18485vw,89px) + 21px);border-radius:4px}
-.paper-case .site-header .pill{background:#ffffff1a;outline:1px solid #4d4d4d;outline-offset:1px;min-height:36px}
-.paper-case .site-header .telegram-icon{padding:8px;width:40px;height:40px;min-height:40px;border-radius:50%}
-.paper-case .site-header .pill:hover{background:#ffffff26}
+
+
+
 @media(max-width:700px){
  .paper-case .site-header{height:64px;min-height:64px;flex-wrap:nowrap;align-items:center;justify-content:center;gap:12px;padding:0 32px}
  .paper-case .site-header .identity{display:none}
