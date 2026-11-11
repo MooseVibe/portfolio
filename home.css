@@ -49,6 +49,7 @@
  .home-redesign .hero{grid-template-columns:var(--rail) minmax(0,1fr) var(--rail)}
  .home-redesign .hero-rail{display:none}
  .home-redesign .head-stage,.home-redesign #head-view{width:430px;height:364px}
+ .home-redesign .accessories{left:auto;right:24px;top:62px}
  .home-redesign .site-header{height:100%;min-height:0;padding:0 12px;flex-wrap:nowrap;gap:12px;align-items:center;justify-content:center}
  .home-redesign .site-header .identity{display:none}
  .home-redesign .site-header .identity img{width:32px;height:32px}
