@@ -42,7 +42,7 @@
 .home-redesign #head-view{width:659px;max-width:none}
 .home-redesign .intro{display:flex;flex-direction:column;align-items:center;margin-top:46px;position:relative}
 .home-redesign .intro h1{font-family:'FKT Gnarly VF',system-ui,sans-serif;font-size:44px;line-height:52px;font-weight:600;letter-spacing:0;color:#f4f4f4}
-.home-redesign .intro p{font-family:Geist,system-ui,sans-serif;font-size:20px;line-height:28px;font-weight:400;color:#ffffffad;width:499px;max-width:calc(100% - 48px);margin:8px auto 0}
+.home-redesign .intro p{font-family:Geist,system-ui,sans-serif;font-size:20px;line-height:28px;font-weight:400;color:#ffffffad;width:100%;max-width:420px;margin:8px auto 0}
 .home-redesign .works{position:relative;z-index:1;padding:0;border-top:1px solid var(--grid)}
 .home-redesign .works-container{width:100%;max-width:none;gap:1px;background:var(--grid)}
 .home-redesign .project{display:grid;grid-template-columns:var(--rail) minmax(0,1fr) var(--rail);gap:1px;background:transparent;padding:0;position:relative}
@@ -77,7 +77,7 @@
  .home-redesign .site-header .telegram-icon{padding:7px;width:36px;height:36px;min-height:36px}
  .home-redesign .intro{margin-top:46px;padding-inline:12px}
  .home-redesign .intro h1{font-size:34px;line-height:42px;max-width:none}
- .home-redesign .intro p{font-size:17px;line-height:25px;width:330px;max-width:100%;margin-top:8px}
+ .home-redesign .intro p{font-size:17px;line-height:25px;width:100%;max-width:100%;margin-top:8px}
 }
 @media(max-width:370px){.home-redesign .site-header .identity{font-size:16px}.home-redesign .site-header .identity img{display:none}.home-redesign .site-header .contact-links{gap:8px}}
 
@@ -100,7 +100,7 @@
 .home-footer-row>.grid-block{z-index:1}
 
 
-.home-redesign .intro p{white-space:pre-line}
+
 
 @keyframes case-underline-green{0%{transform:scaleX(1);transform-origin:right center;background:currentColor}42%{transform:scaleX(0);transform-origin:right center;background:currentColor}43%{transform:scaleX(0);transform-origin:left center;background:#00be7b}100%{transform:scaleX(1);transform-origin:left center;background:#00be7b}}
 @media(hover:hover){.home-redesign .project-link:hover::after{animation:case-underline-green .75s cubic-bezier(.76,0,.24,1) both}}
