@@ -184,4 +184,4 @@ html:not(.is-loading):not(.is-returning) .head-stage.is-fallback #head-poster{an
 @media(hover:hover){.site-header .contact-links .pill:hover{background:#ffffff1a;box-shadow:0 0 7px #00be7b1f,inset 0 0 4px #00be7b0a}.site-header .contact-links .pill:hover::after{--contact-sweep:360deg;animation:contact-outline-spark .4s ease-out}}
 .site-header .contact-links .pill:focus-visible::after{--contact-sweep:360deg}
 @media(prefers-reduced-motion:reduce){.site-header .contact-links .pill,.site-header .contact-links .pill::after{transition:none}.site-header .contact-links .pill:hover::after{animation:none}}
-@media(max-width:700px){.site-header .contact-links .pill{font-size:14px;padding:7px 10px}.site-header .contact-links .telegram-icon{padding:7px;width:36px;height:36px;min-height:36px}}
+@media(max-width:700px){.site-header .contact-links .pill{font-size:14px;padding:7px 10px 7px 14px}.site-header .contact-links .telegram-icon{padding:7px;width:36px;height:36px;min-height:36px}}
